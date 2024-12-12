@@ -1,4 +1,4 @@
-package ru.dsis.atms;
+package ru.dsis.atms.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
