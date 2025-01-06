@@ -12,11 +12,27 @@ public class UsersService {
     @Autowired
     private UsersRepository usersRepository;
 
-    public List<PostgresUser> findAll() {
-        return usersRepository.findAll();
+    public void saveUser(PostgresUser user) {
+        usersRepository.save(user);
     }
 
-    public void addUser(PostgresUser user) {
-        usersRepository.addUser(user);
+    public PostgresUser findUserById(Long id) {
+        return usersRepository.findById(id);
+    }
+
+    public PostgresUser findUserByUsername(String username) {
+        return usersRepository.findByUsername(username);
+    }
+
+    public void updateUser(PostgresUser user) {
+        usersRepository.update(user);
+    }
+
+    public void deleteUserById(Long id) {
+        usersRepository.deleteById(id);
+    }
+
+    public List<PostgresUser> getAllUsers() {
+        return usersRepository.findAll();
     }
 }
