@@ -1,9 +1,10 @@
-package ru.dsis.atms.users.dao;
+package ru.dsis.atms.users.dao.postgres;
 
 public class PostgresUser {
     private Long id;
     private String username;
     private String password;
+    private Long roleId;
 
     public Long getId() {
         return id;
@@ -27,5 +28,13 @@ public class PostgresUser {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 }

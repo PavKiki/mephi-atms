@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import ru.dsis.atms.users.dao.PostgresPermission;
+import ru.dsis.atms.users.dao.postgres.PostgresPermission;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,9 +20,9 @@ public class PermissionsRepository {
         jdbcTemplate.update(sql, permission.getPermissionName());
     }
 
-    public PostgresPermission findByPermissionName(String permissionName) {
-        String sql = "SELECT * FROM permissions WHERE permission_name = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{permissionName}, new PermissionRowMapper());
+    public List<PostgresPermission> findAll() {
+        String sql = "SELECT * FROM permissions";
+        return jdbcTemplate.query(sql, new PermissionRowMapper());
     }
 
     public List<PostgresPermission> findPermissionsByUserId(Long userId) {
@@ -31,7 +31,7 @@ public class PermissionsRepository {
                      "JOIN roles r ON rp.role_id = r.id " +
                      "JOIN user_roles ur ON r.id = ur.role_id " +
                      "WHERE ur.user_id = ?";
-        return jdbcTemplate.query(sql, new Object[]{userId}, new PermissionRowMapper());
+        return jdbcTemplate.query(sql, new PermissionRowMapper(), userId);
     }
 
     private static class PermissionRowMapper implements RowMapper<PostgresPermission> {

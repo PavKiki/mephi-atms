@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import ru.dsis.atms.users.dao.PostgresUser;
+import ru.dsis.atms.users.dao.data.UserData;
+import ru.dsis.atms.users.dao.postgres.PostgresRole;
+import ru.dsis.atms.users.dao.postgres.PostgresUser;
+import ru.dsis.atms.users.dao.data.UserDataWithPassword;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,43 +18,60 @@ public class UsersRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public void save(PostgresUser user) {
+    public void save(UserDataWithPassword user) {
         String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
         jdbcTemplate.update(sql, user.getUsername(), user.getPassword());
     }
+//
+//    public void deleteById(Long id) {
+//        String sql = "DELETE FROM users WHERE id = ?";
+//        jdbcTemplate.update(sql, id);
+//    }
 
-    public PostgresUser findById(Long id) {
-        String sql = "SELECT * FROM users WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{id}, new UserRowMapper());
-    }
-
-    public PostgresUser findByUsername(String username) {
-        String sql = "SELECT * FROM users WHERE username = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{username}, new UserRowMapper());
-    }
-
-    public void update(PostgresUser user) {
-        String sql = "UPDATE users SET username = ?, password = ? WHERE id = ?";
-        jdbcTemplate.update(sql, user.getUsername(), user.getPassword(), user.getId());
-    }
-
-    public void deleteById(Long id) {
-        String sql = "DELETE FROM users WHERE id = ?";
-        jdbcTemplate.update(sql, id);
-    }
-
-    public List<PostgresUser> findAll() {
+    public List<UserData> findAll() {
         String sql = "SELECT * FROM users";
         return jdbcTemplate.query(sql, new UserRowMapper());
     }
 
-    private static class UserRowMapper implements RowMapper<PostgresUser> {
+    public PostgresUser findByUsername(String username) {
+        String sql = "SELECT u.*, r.* " +
+                     "FROM users u " +
+                     "INNER JOIN roles r ON u.role_id = r.id " +
+                     "WHERE u.username = ?";
+        return jdbcTemplate.queryForObject(sql, new UserWithRoleRowMapper(), username);
+    }
+
+    public void addRoleToUser(PostgresUser user, PostgresRole role) {
+        String sql = "UPDATE users " +
+                     "SET role_id = ? " +
+                     "WHERE username = ?";
+        jdbcTemplate.update(sql, role.getId(), user.getUsername());
+    }
+
+    private static class UserRowMapper implements RowMapper<UserData> {
+        @Override
+        public UserData mapRow(ResultSet rs, int rowNum) throws SQLException {
+            UserData user = new UserData();
+            user.setId(rs.getLong("id"));
+            user.setUsername(rs.getString("username"));
+
+            return user;
+        }
+    }
+
+    private static class UserWithRoleRowMapper implements RowMapper<PostgresUser> {
         @Override
         public PostgresUser mapRow(ResultSet rs, int rowNum) throws SQLException {
             PostgresUser user = new PostgresUser();
             user.setId(rs.getLong("id"));
             user.setUsername(rs.getString("username"));
-            user.setPassword(rs.getString("password"));
+
+            PostgresRole role = new PostgresRole();
+            role.setId(rs.getLong("role_id"));
+            role.setRoleName(rs.getString("role_name"));
+
+            user.setRole(role);
+
             return user;
         }
     }

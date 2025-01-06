@@ -2,7 +2,7 @@ package ru.dsis.atms.users.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.dsis.atms.users.dao.PostgresPermission;
+import ru.dsis.atms.users.dao.postgres.PostgresPermission;
 import ru.dsis.atms.users.repository.PermissionsRepository;
 
 import java.util.List;
@@ -16,8 +16,8 @@ public class PermissionsService {
         permissionsRepository.save(permission);
     }
 
-    public PostgresPermission findByName(String permissionName) {
-        return permissionsRepository.findByPermissionName(permissionName);
+    public List<PostgresPermission> findAll() {
+        return permissionsRepository.findAll();
     }
 
     public List<PostgresPermission> findByUserId(Long userId) {

@@ -1,4 +1,4 @@
-package ru.dsis.atms.users.dao;
+package ru.dsis.atms.users.dao.postgres;
 
 public class PostgresRole {
     private Long id;
