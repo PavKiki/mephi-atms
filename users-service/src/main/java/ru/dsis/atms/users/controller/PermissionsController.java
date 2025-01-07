@@ -13,18 +13,38 @@ public class PermissionsController {
     @Autowired
     private PermissionsService permissionsService;
 
-    @PostMapping("/register")
-    public void register(@RequestBody PostgresPermission permission) {
-        permissionsService.savePermission(permission);
-    }
-
     @GetMapping("/all")
     public List<PostgresPermission> findAll() {
         return permissionsService.findAll();
     }
 
-    @GetMapping("/findBy")
+    @GetMapping("/find/by/permissionId")
+    public PostgresPermission findById(@RequestParam Long id) {
+        return permissionsService.findById(id);
+    }
+
+    @GetMapping("/find/by/permissionName")
+    public PostgresPermission findByName(@RequestParam String name) {
+        return permissionsService.findByName(name);
+    }
+
+    @GetMapping("/find/by/roleId")
+    public List<PostgresPermission> findByRoleId(@RequestParam Long roleId) {
+        return permissionsService.findByRoleId(roleId);
+    }
+
+    @GetMapping("/find/by/roleName")
+    public List<PostgresPermission> findByRoleName(@RequestParam String roleName) {
+        return permissionsService.findByRoleName(roleName);
+    }
+
+    @GetMapping("/find/by/userId")
     public List<PostgresPermission> findByUserId(@RequestParam Long userId) {
-        return permissionsService.findByUserId(userId);
+        return permissionsService.findPermissionsByUserId(userId);
+    }
+
+    @GetMapping("/find/by/username")
+    public List<PostgresPermission> findByUsername(@RequestParam String username) {
+        return permissionsService.findPermissionsByUsername(username);
     }
 }

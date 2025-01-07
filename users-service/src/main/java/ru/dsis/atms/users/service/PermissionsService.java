@@ -12,15 +12,31 @@ public class PermissionsService {
     @Autowired
     private PermissionsRepository permissionsRepository;
 
-    public void savePermission(PostgresPermission permission) {
-        permissionsRepository.save(permission);
-    }
-
     public List<PostgresPermission> findAll() {
         return permissionsRepository.findAll();
     }
 
-    public List<PostgresPermission> findByUserId(Long userId) {
+    public PostgresPermission findById(Long id) {
+        return permissionsRepository.findById(id);
+    }
+
+    public PostgresPermission findByName(String name) {
+        return permissionsRepository.findByName(name);
+    }
+
+    public List<PostgresPermission> findByRoleId(Long roleId) {
+        return permissionsRepository.findByRoleId(roleId);
+    }
+
+    public List<PostgresPermission> findByRoleName(String roleName) {
+        return permissionsRepository.findByRoleName(roleName);
+    }
+
+    public List<PostgresPermission> findPermissionsByUserId(Long userId) {
         return permissionsRepository.findPermissionsByUserId(userId);
+    }
+
+    public List<PostgresPermission> findPermissionsByUsername(String username) {
+        return permissionsRepository.findPermissionsByUsername(username);
     }
 }

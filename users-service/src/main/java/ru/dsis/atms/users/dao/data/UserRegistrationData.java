@@ -1,22 +1,13 @@
-package ru.dsis.atms.users.dao.postgres;
+package ru.dsis.atms.users.dao.data;
 
 import java.time.LocalDateTime;
 
-public class PostgresUser {
-    private Long id;
+public class UserRegistrationData {
     private String username;
     private String password;
     private String name;
-    private LocalDateTime created;
     private Long roleId;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private LocalDateTime created;
 
     public String getUsername() {
         return username;
@@ -42,19 +33,19 @@ public class PostgresUser {
         this.name = name;
     }
 
-    public LocalDateTime getCreated() {
-        return created;
-    }
-
-    public void setCreated(LocalDateTime created) {
-        this.created = created;
-    }
-
     public Long getRoleId() {
         return roleId;
     }
 
     public void setRoleId(Long roleId) {
         this.roleId = roleId;
+    }
+
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
     }
 }
