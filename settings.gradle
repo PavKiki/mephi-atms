@@ -3,3 +3,5 @@ rootProject.name = 'atms'
 include ':api-gateway'
 include ':users-service'
 include ':jdbc-postgres-client'
+include ':authentication-service'
+
