@@ -1,0 +1,34 @@
+services:
+  authentication_service:
+    build:
+      context: ./authentication-service
+    ports:
+      - "50001:50001"
+    depends_on:
+      - postgres_db_container
+
+  users_service:
+    build:
+      context: ./users-service
+    ports:
+      - "50002:50002"
+    depends_on:
+      - postgres_db_container
+
+  api_gateway:
+    build:
+      context: ./api-gateway
+    ports:
+      - "50000:50000"
+    depends_on:
+      - authentication_service
+      - users_service
+
+  postgres_db_container:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: atms
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "49999:5432"
