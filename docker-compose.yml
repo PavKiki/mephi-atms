@@ -30,5 +30,7 @@ services:
       POSTGRES_DB: atms
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./db-scripts:/docker-entrypoint-initdb.d
     ports:
       - "49999:5432"
