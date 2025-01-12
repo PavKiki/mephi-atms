@@ -1,7 +1,3 @@
-bootJar {
-    enabled = true
-}
-
 dependencies {
     implementation project(':jdbc-postgres-client')
 
@@ -10,4 +6,9 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.2'
     implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.2'
+}
+
+bootJar {
+    enabled = true
+    mainClass = 'ru.dsis.atms.auth.AuthMain'
 }

@@ -1,10 +1,11 @@
-bootJar {
-    enabled = true
-}
-
 dependencies {
     implementation project(':jdbc-postgres-client')
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+}
+
+bootJar {
+    enabled = true
+    mainClass = 'ru.dsis.atms.users.UsersMain'
 }
