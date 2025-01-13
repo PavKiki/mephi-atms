@@ -1,30 +1,30 @@
 services:
-  authentication_service:
+  authentication-service-container:
     build:
       context: ./authentication-service
     ports:
       - "50001:50001"
     depends_on:
-      - postgres_db_container
+      - postgres-db-container
 
-  users_service:
+  users-service-container:
     build:
       context: ./users-service
     ports:
       - "50002:50002"
     depends_on:
-      - postgres_db_container
+      - postgres-db-container
 
-  api_gateway:
+  api-gateway-container:
     build:
       context: ./api-gateway
     ports:
       - "50000:50000"
     depends_on:
-      - authentication_service
-      - users_service
+      - authentication-service-container
+      - users-service-container
 
-  postgres_db_container:
+  postgres-db-container:
     image: postgres:13
     environment:
       POSTGRES_DB: atms
