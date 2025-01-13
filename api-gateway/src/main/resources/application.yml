@@ -11,9 +11,19 @@ spring:
           filters:
             - StripPrefix=1
 
+        - id: logout
+          uri: http://localhost:50001
+          predicates:
+            - Path=/api/auth/logout
+          filters:
+            - StripPrefix=1
+
         - id: users-service
           uri: http://localhost:50002
           predicates:
             - Path=/api/users/**, /api/roles/**, /api/permissions/**
           filters:
             - StripPrefix=1
+            - name: JwtValidation
+              args:
+                logMessage: Jwt validation filter executed

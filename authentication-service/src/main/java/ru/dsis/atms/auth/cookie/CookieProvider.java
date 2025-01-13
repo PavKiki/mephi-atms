@@ -22,4 +22,14 @@ public class CookieProvider {
 
         return cookie;
     }
+
+    public Cookie emptyCookie() {
+        var cookie = new Cookie("jwtToken", null);
+        cookie.setMaxAge(0);
+        cookie.setHttpOnly(isHttpOnly);
+        cookie.setSecure(isSecure);
+        cookie.setPath("/");
+
+        return cookie;
+    }
 }

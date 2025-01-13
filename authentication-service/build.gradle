@@ -1,19 +1,15 @@
-bootJar {
-    enabled = true
-}
-
 dependencies {
     implementation project(':jdbc-postgres-client')
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
-
-    implementation 'io.jsonwebtoken:jjwt:0.9.1'
-    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.2'
-    implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.2'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
+    implementation 'io.jsonwebtoken:jjwt:0.12.6'
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:4.0.5'
 }
 
 bootJar {
+    enabled = true
     mainClass = 'ru.dsis.atms.auth.AuthMain'
 }
