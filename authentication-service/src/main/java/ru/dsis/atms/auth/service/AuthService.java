@@ -22,4 +22,8 @@ public class AuthService {
 
         return jwtProvider.generateToken(user);
     }
+
+    public boolean validateToken(String token) {
+        return jwtProvider.validateToken(token);
+    }
 }

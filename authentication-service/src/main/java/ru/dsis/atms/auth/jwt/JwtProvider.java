@@ -1,33 +1,56 @@
 package ru.dsis.atms.auth.jwt;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.dsis.atms.auth.dao.UserInfo;
 
+import javax.crypto.SecretKey;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class JwtProvider {
-    private long expirationTime;
-    private String secret;
+
+    private final Logger log = LoggerFactory.getLogger(JwtProvider.class);
+
+    private final long expirationTime;
+    private final SecretKey secretKey;
 
     public JwtProvider(long expirationTime, String secret) {
         this.expirationTime = expirationTime;
-        this.secret = secret;
+        this.secretKey = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
     public String generateToken(UserInfo userInfo) {
-        var claims = Jwts.claims();
-        claims.put("name", userInfo.getName());
-        claims.put("role", userInfo.getRole());
-        claims.put("created", userInfo.getCreated().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-
         return Jwts.builder()
-                   .setSubject(userInfo.getUsername())
-                   .setClaims(claims)
-                   .setIssuedAt(new Date())
-                   .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
-                   .signWith(SignatureAlgorithm.HS512, secret)
+                   .subject(userInfo.getUsername())
+                   .claim("name", userInfo.getName())
+                   .claim("role", userInfo.getRole())
+                   .claim("created", userInfo.getCreated().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+                   .issuedAt(new Date())
+                   .expiration(new Date(System.currentTimeMillis() + expirationTime))
+                   .signWith(secretKey)
                    .compact();
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            var jwtParser = Jwts.parser()
+                                .verifyWith(secretKey)
+                                .decryptWith(secretKey)
+                                .build();
+
+            var payload = jwtParser.parseSignedClaims(token).getPayload();
+            if (payload.getExpiration().before(new Date())) {
+                log.error("Token expired");
+                throw new IllegalStateException("Token expired");
+            }
+
+            return true;
+        } catch (Exception e) {
+            log.error("Invalid token ", e);
+            return false;
+        }
     }
 }
