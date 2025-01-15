@@ -1,5 +1,6 @@
 dependencies {
     implementation project(':jdbc-postgres-client')
+    implementation project(':web-utils')
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'

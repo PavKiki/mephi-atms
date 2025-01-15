@@ -101,18 +101,6 @@ public class UsersService {
         usersRepository.patchRole(user.getId(), role.getId());
     }
 
-    public void patchCreatedByUserId(Long userId, LocalDateTime created) {
-        usersRepository.patchCreated(userId, created);
-    }
-
-    public void patchCreatedByUsername(String username, LocalDateTime created) {
-        var user = usersRepository.findByUsername(username);
-        if (user == null) {
-            throw new IllegalArgumentException("User not found");
-        }
-        usersRepository.patchCreated(user.getId(), created);
-    }
-
     public void deleteById(Long id) {
         usersRepository.delete(id);
     }

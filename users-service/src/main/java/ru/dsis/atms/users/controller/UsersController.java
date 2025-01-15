@@ -85,16 +85,6 @@ public class UsersController {
         usersService.patchRoleByUsername(username, newRoleName);
     }
 
-    @PatchMapping("/patch/created/by/userId")
-    public void patchCreated(@RequestParam Long userId, @RequestParam LocalDateTime newCreated) {
-        usersService.patchCreatedByUserId(userId, newCreated);
-    }
-
-    @PatchMapping("/patch/created/by/username")
-    public void patchCreated(@RequestParam String username, @RequestParam LocalDateTime newCreated) {
-        usersService.patchCreatedByUsername(username, newCreated);
-    }
-
     @DeleteMapping("/delete/by/userId")
     public void deleteUser(@RequestParam Long userId) {
         usersService.deleteById(userId);

@@ -3,18 +3,23 @@ spring:
     name: api-gateway
   cloud:
     gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:5173"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+            allowedHeaders: "*"
+            allowCredentials: true
       routes:
         - id: login
           uri: http://localhost:50001
           predicates:
             - Path=/api/auth/login
-          filters:
-            - StripPrefix=1
-
-        - id: logout
-          uri: http://localhost:50001
-          predicates:
-            - Path=/api/auth/logout
           filters:
             - StripPrefix=1
 

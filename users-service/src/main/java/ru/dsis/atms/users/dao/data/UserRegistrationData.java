@@ -7,7 +7,6 @@ public class UserRegistrationData {
     private String password;
     private String name;
     private Long roleId;
-    private LocalDateTime created;
 
     public String getUsername() {
         return username;
@@ -39,13 +38,5 @@ public class UserRegistrationData {
 
     public void setRoleId(Long roleId) {
         this.roleId = roleId;
-    }
-
-    public LocalDateTime getCreated() {
-        return created;
-    }
-
-    public void setCreated(LocalDateTime created) {
-        this.created = created;
     }
 }
