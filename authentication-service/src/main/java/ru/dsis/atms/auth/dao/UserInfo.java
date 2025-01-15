@@ -1,12 +1,12 @@
 package ru.dsis.atms.auth.dao;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 public class UserInfo {
     private String username;
     private String name;
     private String role;
-    private LocalDateTime created;
+    private ZonedDateTime created;
 
     public String getUsername() {
         return username;
@@ -32,11 +32,11 @@ public class UserInfo {
         this.role = role;
     }
 
-    public LocalDateTime getCreated() {
+    public ZonedDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDateTime created) {
+    public void setCreated(ZonedDateTime created) {
         this.created = created;
     }
 }

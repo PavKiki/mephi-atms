@@ -7,22 +7,22 @@ import ru.dsis.atms.users.dao.data.UserData
 import ru.dsis.atms.users.dao.data.UserRegistrationData
 import java.sql.ResultSet
 import java.sql.SQLException
+import java.time.ZoneOffset
 
 @Repository
 class UsersRepository(val jdbcTemplate: JdbcTemplate) {
     fun save(user: UserRegistrationData) {
         val sql = """
-            INSERT INTO users (username, password, name, role_id) 
+            INSERT INTO users (username, password, name, role_name) 
             VALUES (?, ?, ?, ?)
         """.trimIndent()
-        jdbcTemplate.update(sql, user.username, user.password, user.name, user.roleId)
+        jdbcTemplate.update(sql, user.username, user.password, user.name, user.roleName)
     }
 
     fun findAll(): List<UserData> {
         val sql = """
-            SELECT u.id, u.username, u.name, u.created_at, r.role_name
+            SELECT u.id, u.username, u.name, u.created_at, u.role_name
             FROM users u 
-            INNER JOIN roles r ON u.role_id = r.id
             ORDER BY u.id ASC
         """.trimIndent()
         return jdbcTemplate.query(sql, UserRowMapper())
@@ -30,10 +30,8 @@ class UsersRepository(val jdbcTemplate: JdbcTemplate) {
 
     fun findById(id: Long): UserData? {
         val sql = """
-            SELECT u.id, u.username, u.name, u.created_at, r.role_name
+            SELECT u.id, u.username, u.name, u.created_at, u.role_name
             FROM users u
-            INNER JOIN roles r 
-            ON u.role_id = r.id
             WHERE u.id = ?
         """.trimIndent()
         return jdbcTemplate.queryForObject(sql, UserRowMapper(), id)
@@ -41,10 +39,8 @@ class UsersRepository(val jdbcTemplate: JdbcTemplate) {
 
     fun findByUsername(username: String): UserData? {
         val sql = """
-            SELECT u.id, u.username, u.name, u.created_at, r.role_name
+            SELECT u.id, u.username, u.name, u.created_at, u.role_name
             FROM users u
-            INNER JOIN roles r 
-            ON u.role_id = r.id
             WHERE u.username = ?
         """.trimIndent()
         return jdbcTemplate.queryForObject(sql, UserRowMapper(), username)
@@ -80,7 +76,7 @@ class UsersRepository(val jdbcTemplate: JdbcTemplate) {
     fun patchRole(userId: Long, roleId: Long) {
         val sql = """
             UPDATE users
-            SET role_id = ?
+            SET role_name = ?
             WHERE id = ?
         """.trimIndent()
         jdbcTemplate.update(sql, roleId, userId)
@@ -102,7 +98,7 @@ class UsersRepository(val jdbcTemplate: JdbcTemplate) {
             user.username = rs.getString("username")
             user.name = rs.getString("name")
             user.role = rs.getString("role_name")
-            user.created = rs.getTimestamp("created_at").toLocalDateTime()
+            user.created = rs.getTimestamp("created_at").toInstant().atZone(ZoneOffset.UTC)
 
             return user
         }

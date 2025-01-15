@@ -35,8 +35,8 @@ class PermissionsRepository(val jdbcTemplate: JdbcTemplate) {
     fun findByRoleId(roleId: Long): List<PostgresPermission> {
         val sql = """
             SELECT p.id as permission_id, p.permission_name FROM permissions p
-            INNER JOIN role_permissions rp ON p.id = rp.permission_id
-            INNER JOIN roles r ON rp.role_id = r.id
+            INNER JOIN role_permissions rp ON p.permission_name = rp.permission_name
+            INNER JOIN roles r ON rp.role_name = r.role_name
             WHERE r.id = ?
         """.trimIndent()
         return jdbcTemplate.query(sql, PermissionRowMapper(), roleId)
@@ -45,8 +45,8 @@ class PermissionsRepository(val jdbcTemplate: JdbcTemplate) {
     fun findByRoleName(roleName: String): List<PostgresPermission> {
         val sql = """
             SELECT p.id as permission_id, p.permission_name FROM permissions p
-            INNER JOIN role_permissions rp ON p.id = rp.permission_id
-            INNER JOIN roles r ON rp.role_id = r.id
+            INNER JOIN role_permissions rp ON p.permission_name = rp.permission_name
+            INNER JOIN roles r ON rp.role_name = r.role_name
             WHERE r.role_name = ?
         """.trimIndent()
         return jdbcTemplate.query(sql, PermissionRowMapper(), roleName)
@@ -55,9 +55,9 @@ class PermissionsRepository(val jdbcTemplate: JdbcTemplate) {
     fun findPermissionsByUserId(userId: Long): List<PostgresPermission> {
         val sql = """
             SELECT p.id as permission_id, p.permission_name FROM permissions p
-            INNER JOIN role_permissions rp ON p.id = rp.permission_id
-            INNER JOIN roles r ON rp.role_id = r.id
-            INNER JOIN users u ON u.role_id = r.id
+            INNER JOIN role_permissions rp ON p.permission_name = rp.permission_name
+            INNER JOIN roles r ON rp.role_name = r.role_name
+            INNER JOIN users u ON u.role_name = r.role_name
             WHERE u.id = ?
         """.trimIndent()
         return jdbcTemplate.query(sql, PermissionRowMapper(), userId)
@@ -66,9 +66,9 @@ class PermissionsRepository(val jdbcTemplate: JdbcTemplate) {
     fun findPermissionsByUsername(username: String): List<PostgresPermission> {
         val sql = """
             SELECT p.id as permission_id, p.permission_name FROM permissions p
-            INNER JOIN role_permissions rp ON p.id = rp.permission_id
-            INNER JOIN roles r ON rp.role_id = r.id
-            INNER JOIN users u ON u.role_id = r.id
+            INNER JOIN role_permissions rp ON p.permission_name = rp.permission_name
+            INNER JOIN roles r ON rp.role_name = r.role_name
+            INNER JOIN users u ON u.role_name = r.role_name
             WHERE u.username = ?
         """.trimIndent()
         return jdbcTemplate.query(sql, PermissionRowMapper(), username)

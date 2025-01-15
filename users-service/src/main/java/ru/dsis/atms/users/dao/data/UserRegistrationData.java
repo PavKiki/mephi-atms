@@ -1,12 +1,10 @@
 package ru.dsis.atms.users.dao.data;
 
-import java.time.LocalDateTime;
-
 public class UserRegistrationData {
     private String username;
     private String password;
     private String name;
-    private Long roleId;
+    private String roleName;
 
     public String getUsername() {
         return username;
@@ -32,11 +30,11 @@ public class UserRegistrationData {
         this.name = name;
     }
 
-    public Long getRoleId() {
-        return roleId;
+    public String getRoleName() {
+        return roleName;
     }
 
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 }

@@ -1,13 +1,13 @@
 package ru.dsis.atms.users.dao.data;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 public class UserData {
     private Long id;
     private String username;
     private String name;
     private String role;
-    private LocalDateTime created;
+    private ZonedDateTime created;
 
     public Long getId() {
         return id;
@@ -41,11 +41,11 @@ public class UserData {
         this.role = role;
     }
 
-    public LocalDateTime getCreated() {
+    public ZonedDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDateTime created) {
+    public void setCreated(ZonedDateTime created) {
         this.created = created;
     }
 }
