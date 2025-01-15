@@ -14,7 +14,7 @@ CREATE TABLE users (
     password VARCHAR(100) NOT NULL,
     name VARCHAR(50) NOT NULL,
     role_id INTEGER NOT NULL,
-    created TIMESTAMP NOT NULL,
+    created_at TIMESTAMP NOT NULL,
     FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
@@ -25,6 +25,19 @@ CREATE TABLE role_permissions (
     FOREIGN KEY (role_id) REFERENCES roles(id),
     FOREIGN KEY (permission_id) REFERENCES permissions(id)
 );
+
+CREATE OR REPLACE FUNCTION set_created_at()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.created_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER before_insert_your_table
+BEFORE INSERT ON users
+FOR EACH ROW
+EXECUTE FUNCTION set_created_at();
 
 INSERT INTO permissions (id, permission_name)
 VALUES
@@ -44,7 +57,7 @@ VALUES
 (0, 2),
 (1, 0);
 
-INSERT INTO users (username, password, name, role_id, created)
+INSERT INTO users (username, password, name, role_id)
 VALUES
-('AbraKadabra228', '12345678', 'Walter', 0, now()),
-('Champion', '87654321', 'John', 1, now());
+('AbraKadabra228', '12345678', 'Walter', 0),
+('Champion', '87654321', 'John', 1);

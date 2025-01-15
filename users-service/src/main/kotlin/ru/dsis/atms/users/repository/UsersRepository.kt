@@ -7,30 +7,30 @@ import ru.dsis.atms.users.dao.data.UserData
 import ru.dsis.atms.users.dao.data.UserRegistrationData
 import java.sql.ResultSet
 import java.sql.SQLException
-import java.time.LocalDateTime
 
 @Repository
 class UsersRepository(val jdbcTemplate: JdbcTemplate) {
     fun save(user: UserRegistrationData) {
         val sql = """
-            INSERT INTO users (username, password, name, role_id, created) 
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO users (username, password, name, role_id) 
+            VALUES (?, ?, ?, ?)
         """.trimIndent()
-        jdbcTemplate.update(sql, user.username, user.password, user.name, user.roleId, user.created)
+        jdbcTemplate.update(sql, user.username, user.password, user.name, user.roleId)
     }
 
     fun findAll(): List<UserData> {
         val sql = """
-            SELECT u.id, u.username, u.name, u.created, r.role_name
+            SELECT u.id, u.username, u.name, u.created_at, r.role_name
             FROM users u 
             INNER JOIN roles r ON u.role_id = r.id
+            ORDER BY u.id ASC
         """.trimIndent()
         return jdbcTemplate.query(sql, UserRowMapper())
     }
 
     fun findById(id: Long): UserData? {
         val sql = """
-            SELECT u.id, u.username, u.name, u.created, r.role_name
+            SELECT u.id, u.username, u.name, u.created_at, r.role_name
             FROM users u
             INNER JOIN roles r 
             ON u.role_id = r.id
@@ -41,7 +41,7 @@ class UsersRepository(val jdbcTemplate: JdbcTemplate) {
 
     fun findByUsername(username: String): UserData? {
         val sql = """
-            SELECT u.id, u.username, u.name, u.created, r.role_name
+            SELECT u.id, u.username, u.name, u.created_at, r.role_name
             FROM users u
             INNER JOIN roles r 
             ON u.role_id = r.id
@@ -86,15 +86,6 @@ class UsersRepository(val jdbcTemplate: JdbcTemplate) {
         jdbcTemplate.update(sql, roleId, userId)
     }
 
-    fun patchCreated(userId: Long, created: LocalDateTime) {
-        val sql = """
-            UPDATE users
-            SET created = ?
-            WHERE id = ?
-        """.trimIndent()
-        jdbcTemplate.update(sql, created, userId)
-    }
-
     fun delete(id: Long) {
         val sql = """
             DELETE FROM users
@@ -111,7 +102,7 @@ class UsersRepository(val jdbcTemplate: JdbcTemplate) {
             user.username = rs.getString("username")
             user.name = rs.getString("name")
             user.role = rs.getString("role_name")
-            user.created = rs.getTimestamp("created").toLocalDateTime()
+            user.created = rs.getTimestamp("created_at").toLocalDateTime()
 
             return user
         }
