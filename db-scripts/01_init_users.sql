@@ -5,6 +5,7 @@ CREATE TABLE permissions (
 
 CREATE TABLE roles (
     id SERIAL PRIMARY KEY,
+    role_description VARCHAR(50) UNIQUE NOT NULL,
     role_name VARCHAR(50) UNIQUE NOT NULL
 );
 
@@ -13,51 +14,61 @@ CREATE TABLE users (
     username VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(100) NOT NULL,
     name VARCHAR(50) NOT NULL,
-    role_id INTEGER NOT NULL,
-    created_at TIMESTAMP NOT NULL,
-    FOREIGN KEY (role_id) REFERENCES roles(id)
+    role_name VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (role_name) REFERENCES roles(role_name)
+);
+
+CREATE TABLE tokens (
+    id SERIAL PRIMARY KEY,
+    token VARCHAR(512) UNIQUE NOT NULL,
+    user_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE TABLE role_permissions (
-    role_id INT NOT NULL,
-    permission_id INT NOT NULL,
-    PRIMARY KEY (role_id, permission_id),
-    FOREIGN KEY (role_id) REFERENCES roles(id),
-    FOREIGN KEY (permission_id) REFERENCES permissions(id)
+    role_name VARCHAR(50) NOT NULL,
+    permission_name VARCHAR(50) NOT NULL,
+    PRIMARY KEY (role_name, permission_name),
+    FOREIGN KEY (role_name) REFERENCES roles(role_name),
+    FOREIGN KEY (permission_name) REFERENCES permissions(permission_name)
 );
 
-CREATE OR REPLACE FUNCTION set_created_at()
-RETURNS TRIGGER AS $$
-BEGIN
-  NEW.created_at = NOW();
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER before_insert_your_table
-BEFORE INSERT ON users
-FOR EACH ROW
-EXECUTE FUNCTION set_created_at();
-
-INSERT INTO permissions (id, permission_name)
+INSERT INTO permissions (permission_name)
 VALUES
-(0, 'READ'),
-(1, 'WRITE'),
-(2, 'MODIFY');
+('READ'),
+('EXECUTE'),
+('EDIT'),
+('CREATE'),
+('DELETE'),
+('REGISTER'),
+('PROJECT');
 
-INSERT INTO roles (id, role_name)
+INSERT INTO roles (role_name, role_description)
 VALUES
-(0, 'ADMIN'),
-(1, 'USER');
+('DIRECTOR', 'Руководитель'),
+('TEST_ANALYST', 'Тест-аналитик'),
+('TESTER', 'Тестировщик');
 
-INSERT INTO role_permissions (role_id, permission_id)
+INSERT INTO role_permissions (role_name, permission_name)
 VALUES
-(0, 0),
-(0, 1),
-(0, 2),
-(1, 0);
+('TESTER', 'READ'),
+('TESTER', 'EXECUTE'),
+('TEST_ANALYST', 'READ'),
+('TEST_ANALYST', 'EXECUTE'),
+('TEST_ANALYST', 'EDIT'),
+('TEST_ANALYST', 'CREATE'),
+('TEST_ANALYST', 'DELETE'),
+('DIRECTOR', 'READ'),
+('DIRECTOR', 'EXECUTE'),
+('DIRECTOR', 'EDIT'),
+('DIRECTOR', 'CREATE'),
+('DIRECTOR', 'DELETE'),
+('DIRECTOR', 'REGISTER'),
+('DIRECTOR', 'PROJECT');
 
-INSERT INTO users (username, password, name, role_id)
+INSERT INTO users (username, password, name, role_name)
 VALUES
-('AbraKadabra228', '12345678', 'Walter', 0),
-('Champion', '87654321', 'John', 1);
+('string', 'string', 'string', 'DIRECTOR'),
+('AbraKadabra228', '12345678', 'Walter', 'TEST_ANALYST'),
+('Champion', '87654321', 'John', 'TESTER');
