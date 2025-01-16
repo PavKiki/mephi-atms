@@ -53,7 +53,7 @@ class TestPlanRepository(val jdbcTemplate: JdbcTemplate) {
         return jdbcTemplate.update(sql, id) > 0
     }
 
-    private class TestPlanDaoRowMapper : RowMapper<TestPlanDao> {
+    internal class TestPlanDaoRowMapper : RowMapper<TestPlanDao> {
         @Throws(SQLException::class)
         override fun mapRow(rs: ResultSet, rowNum: Int): TestPlanDao {
             val testPlanDao = TestPlanDao()

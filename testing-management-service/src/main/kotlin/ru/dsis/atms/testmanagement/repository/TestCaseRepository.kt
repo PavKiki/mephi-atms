@@ -53,7 +53,7 @@ class TestCaseRepository(val jdbcTemplate: JdbcTemplate) {
         return jdbcTemplate.update(sql, id) > 0
     }
 
-    class TestCaseDaoRowMapper : RowMapper<TestCaseDao> {
+    internal class TestCaseDaoRowMapper : RowMapper<TestCaseDao> {
         @Throws(SQLException::class)
         override fun mapRow(rs: ResultSet, rowNum: Int): TestCaseDao {
             val testCaseDao = TestCaseDao()

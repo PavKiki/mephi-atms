@@ -5,6 +5,9 @@ import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import ru.dsis.atms.jdbc.util.nullIfZero
 import ru.dsis.atms.testmanagement.dao.ProjectDao
+import ru.dsis.atms.testmanagement.dao.TaskDao
+import ru.dsis.atms.testmanagement.dao.TestCaseDao
+import ru.dsis.atms.testmanagement.dao.TestPlanDao
 import ru.dsis.atms.testmanagement.dto.ProjectDto
 import java.sql.ResultSet
 import java.sql.SQLException
@@ -51,6 +54,26 @@ class ProjectRepository(val jdbcTemplate: JdbcTemplate) {
             WHERE id = ?
         """.trimIndent()
         return jdbcTemplate.update(sql, id) > 0
+    }
+
+    fun findAllTestPlans(id: Int): List<TestPlanDao> {
+        val sql = """
+            SELECT * FROM projects
+            INNER JOIN test_plans 
+            ON projects.id = test_plans.project_id
+            WHERE projects.id = ?
+        """.trimIndent()
+        return jdbcTemplate.query(sql, TestPlanRepository.TestPlanDaoRowMapper(), id)
+    }
+
+    fun findAllTestCases(id: Int): List<TestCaseDao> {
+        val sql = """
+            SELECT * FROM projects
+            INNER JOIN test_cases
+            ON projects.id = test_cases.project_id
+            WHERE projects.id = ?
+        """.trimIndent()
+        return jdbcTemplate.query(sql, TestCaseRepository.TestCaseDaoRowMapper(), id)
     }
 
     private class ProjectDaoRowMapper : RowMapper<ProjectDao> {
