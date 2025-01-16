@@ -69,24 +69,8 @@ public class UsersService {
         usersRepository.patchName(user.getId(), name);
     }
 
-    public void patchRoleByUserId(Long userId, Long roleId) {
-        usersRepository.patchRole(userId, roleId);
-    }
-
     public void patchRoleByUserId(Long userId, String roleName) {
-        var role = rolesRepository.findByRoleName(roleName);
-        if (role == null) {
-            throw new IllegalArgumentException("Role not found");
-        }
-        usersRepository.patchRole(userId, role.getId());
-    }
-
-    public void patchRoleByUsername(String username, Long roleId) {
-        var user = usersRepository.findByUsername(username);
-        if (user == null) {
-            throw new IllegalArgumentException("User not found");
-        }
-        usersRepository.patchRole(user.getId(), roleId);
+        usersRepository.patchRole(userId, roleName);
     }
 
     public void patchRoleByUsername(String username, String roleName) {
@@ -94,11 +78,7 @@ public class UsersService {
         if (user == null) {
             throw new IllegalArgumentException("User not found");
         }
-        var role = rolesRepository.findByRoleName(roleName);
-        if (role == null) {
-            throw new IllegalArgumentException("Role not found");
-        }
-        usersRepository.patchRole(user.getId(), role.getId());
+        usersRepository.patchRole(user.getId(), roleName);
     }
 
     public void deleteById(Long id) {

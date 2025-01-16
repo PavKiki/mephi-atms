@@ -65,19 +65,9 @@ public class UsersController {
         usersService.patchNameByUsername(username, newName);
     }
 
-    @PatchMapping("/patch/roleId/by/userId")
-    public void patchRoleId(@RequestParam Long userId, @RequestParam Long newRoleId) {
-        usersService.patchRoleByUserId(userId, newRoleId);
-    }
-    
     @PatchMapping("/patch/roleName/by/userId")
     public void patchRoleName(@RequestParam Long userId, @RequestParam String newRoleName) {
         usersService.patchRoleByUserId(userId, newRoleName);
-    }
-
-    @PatchMapping("/patch/roleId/by/username")
-    public void patchRoleId(@RequestParam String username, @RequestParam Long newRoleId) {
-        usersService.patchRoleByUsername(username, newRoleId);
     }
 
     @PatchMapping("/patch/roleName/by/username")
