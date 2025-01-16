@@ -61,7 +61,7 @@ public class ProjectService {
         return projectRepository.findAllTestCases(id);
     }
 
-    public TaskDao getTask(int id) {
-        return projectRepository.getTask(id);
-    }
+//    public TaskDao getTask(int id) {
+//        return projectRepository.getTask(id);
+//    }
 }
