@@ -8,5 +8,5 @@ dependencies {
 
 bootJar {
     enabled = true
-    mainClass = 'ru.dsis.atms.tests.TestsMain'
+    mainClass = 'ru.dsis.atms.testmanagement.TestsMain'
 }

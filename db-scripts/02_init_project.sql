@@ -9,7 +9,7 @@ CREATE TABLE projects (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     task_id INT,
-    FOREIGN KEY (task_id) REFERENCES tasks(id)
+    FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE CASCADE
 );
 
 CREATE TABLE test_plans (
@@ -17,15 +17,15 @@ CREATE TABLE test_plans (
     name VARCHAR(255) NOT NULL,
     project_id INT,
     task_id INT,
-    FOREIGN KEY (project_id) REFERENCES projects(id),
-    FOREIGN KEY (task_id) REFERENCES tasks(id)
+    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
+    FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE CASCADE
 );
 
 ALTER TABLE tasks ADD
-    FOREIGN KEY (project_id) REFERENCES projects(id);
+    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE SET NULL;
 
 ALTER TABLE tasks ADD
-    FOREIGN KEY (test_plan_id) REFERENCES test_plans(id);
+    FOREIGN KEY (test_plan_id) REFERENCES test_plans(id) ON DELETE SET NULL;
 
 CREATE TABLE test_cases (
     id SERIAL PRIMARY KEY,
@@ -34,8 +34,8 @@ CREATE TABLE test_cases (
     post_condition VARCHAR(255),
     project_id INT,
     test_plan_id INT,
-    FOREIGN KEY (project_id) REFERENCES projects(id),
-    FOREIGN KEY (test_plan_id) REFERENCES test_plans(id)
+    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
+    FOREIGN KEY (test_plan_id) REFERENCES test_plans(id) ON DELETE SET NULL
 );
 
 CREATE TABLE steps (
@@ -44,8 +44,9 @@ CREATE TABLE steps (
     action VARCHAR(255),
     expected_result VARCHAR(255),
     test_case_id INT,
-    FOREIGN KEY (test_case_id) REFERENCES test_cases(id)
+    FOREIGN KEY (test_case_id) REFERENCES test_cases(id) ON DELETE CASCADE
 );
+
 
 INSERT INTO tasks (description)
 VALUES

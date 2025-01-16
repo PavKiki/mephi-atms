@@ -1,6 +1,8 @@
-package ru.dsis.atms.tests.dao;
+package ru.dsis.atms.testmanagement.dao;
 
-public class TestPlan {
+import ru.dsis.atms.testmanagement.dto.TestPlanDto;
+
+public class TestPlanDao {
     private int id;
     private String name;
     private Integer projectId;
@@ -36,5 +38,14 @@ public class TestPlan {
 
     public void setTaskId(Integer taskId) {
         this.taskId = taskId;
+    }
+
+    public TestPlanDto toDto() {
+        var testPlanDto = new TestPlanDto();
+        testPlanDto.setName(name);
+        testPlanDto.setProjectId(projectId);
+        testPlanDto.setTaskId(taskId);
+
+        return testPlanDto;
     }
 }

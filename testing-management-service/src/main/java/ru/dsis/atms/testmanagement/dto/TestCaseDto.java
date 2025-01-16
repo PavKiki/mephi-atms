@@ -1,20 +1,11 @@
-package ru.dsis.atms.tests.dao;
+package ru.dsis.atms.testmanagement.dto;
 
-public class TestCase {
-    private int id;
+public class TestCaseDto {
     private String name;
     private String preCondition;
     private String postCondition;
     private Integer projectId;
     private Integer testPlanId;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

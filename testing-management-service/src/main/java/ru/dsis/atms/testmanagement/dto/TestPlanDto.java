@@ -1,17 +1,9 @@
-package ru.dsis.atms.tests.dao;
+package ru.dsis.atms.testmanagement.dto;
 
-public class Project {
-    private int id;
+public class TestPlanDto {
     private String name;
+    private Integer projectId;
     private Integer taskId;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -19,6 +11,14 @@ public class Project {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
     }
 
     public Integer getTaskId() {
