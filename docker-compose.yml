@@ -15,6 +15,14 @@ services:
     depends_on:
       - postgres-db-container
 
+  testing-management-service-container:
+    build:
+      context: ./testing-management-service
+    ports:
+      - "50003:50003"
+    depends_on:
+      - postgres-db-container
+
   api-gateway-container:
     build:
       context: ./api-gateway
