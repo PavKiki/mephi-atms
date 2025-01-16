@@ -20,10 +20,18 @@ public class AuthService {
             throw new IllegalArgumentException("User with this credentials not found!");
         }
 
-        return jwtProvider.generateToken(user);
+        var token = jwtProvider.generateToken(user);
+        authRepository.saveToken(user, token);
+
+        return token;
     }
 
     public boolean validateToken(String token) {
-        return jwtProvider.validateToken(token);
+        var claims = jwtProvider.validateToken(token);
+        if (claims != null) {
+            return authRepository.tokenExistsByUsername(claims.getSubject(), token);
+        } else {
+            return false;
+        }
     }
 }

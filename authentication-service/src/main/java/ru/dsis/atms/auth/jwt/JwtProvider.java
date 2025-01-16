@@ -1,5 +1,6 @@
 package ru.dsis.atms.auth.jwt;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
@@ -7,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import ru.dsis.atms.auth.dao.UserInfo;
 
 import javax.crypto.SecretKey;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class JwtProvider {
@@ -27,14 +27,14 @@ public class JwtProvider {
                    .subject(userInfo.getUsername())
                    .claim("name", userInfo.getName())
                    .claim("role", userInfo.getRole())
-                   .claim("created", userInfo.getCreated().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+                   .claim("created", userInfo.getCreated().toString())
                    .issuedAt(new Date())
                    .expiration(new Date(System.currentTimeMillis() + expirationTime))
                    .signWith(secretKey)
                    .compact();
     }
 
-    public boolean validateToken(String token) {
+    public Claims validateToken(String token) {
         try {
             var jwtParser = Jwts.parser()
                                 .verifyWith(secretKey)
@@ -47,10 +47,10 @@ public class JwtProvider {
                 throw new IllegalStateException("Token expired");
             }
 
-            return true;
+            return payload;
         } catch (Exception e) {
             log.error("Invalid token ", e);
-            return false;
+            return null;
         }
     }
 }

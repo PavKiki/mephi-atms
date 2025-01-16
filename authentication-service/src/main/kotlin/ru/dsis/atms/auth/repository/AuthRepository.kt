@@ -20,6 +20,34 @@ class AuthRepository(val jdbcTemplate: JdbcTemplate) {
         return jdbcTemplate.queryForObject(sql, UserInfoRowMapper(), userDao.username, userDao.password)
     }
 
+    fun userIdByUsername(username: String): Int? {
+        val sql = """
+            SELECT id FROM users WHERE username = ?
+        """.trimIndent()
+        return jdbcTemplate.queryForObject(sql, Int::class.java, username)
+                   ?: throw IllegalArgumentException("User id was not found by $username")
+    }
+
+    fun saveToken(userInfo: UserInfo, token: String) {
+        val userId = userIdByUsername(userInfo.username)
+        val sql = """
+            INSERT INTO tokens (user_id, token)
+            VALUES (?, ?)
+        """.trimIndent()
+        jdbcTemplate.update(sql, userId, token)
+    }
+
+    fun tokenExistsByUsername(username: String, token: String): Boolean {
+        val userId = userIdByUsername(username)
+        val sql = """
+            SELECT EXISTS (
+                SELECT 1 FROM tokens 
+                WHERE user_id = ? AND token = ?
+            )
+        """.trimIndent()
+        return jdbcTemplate.queryForObject(sql, Boolean::class.java, userId, token)!!
+    }
+
     private class UserInfoRowMapper : RowMapper<UserInfo> {
         @Throws(SQLException::class)
         override fun mapRow(rs: ResultSet, rowNum: Int): UserInfo {

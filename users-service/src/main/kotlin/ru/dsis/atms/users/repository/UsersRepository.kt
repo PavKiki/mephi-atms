@@ -73,13 +73,13 @@ class UsersRepository(val jdbcTemplate: JdbcTemplate) {
         jdbcTemplate.update(sql, name, userId)
     }
 
-    fun patchRole(userId: Long, roleId: Long) {
+    fun patchRole(userId: Long, roleName: String) {
         val sql = """
             UPDATE users
             SET role_name = ?
             WHERE id = ?
         """.trimIndent()
-        jdbcTemplate.update(sql, roleId, userId)
+        jdbcTemplate.update(sql, roleName, userId)
     }
 
     fun delete(id: Long) {
