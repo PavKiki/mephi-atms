@@ -1,11 +1,13 @@
 package ru.dsis.atms.testmanagement.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.dsis.atms.client.tasks.TasksManagementClient;
+import ru.dsis.atms.client.tasks.dao.TaskDao;
 import ru.dsis.atms.testmanagement.dao.ProjectDao;
-import ru.dsis.atms.testmanagement.dao.TaskDao;
 import ru.dsis.atms.testmanagement.dao.TestCaseDao;
 import ru.dsis.atms.testmanagement.dao.TestPlanDao;
 import ru.dsis.atms.testmanagement.dto.ProjectDto;
@@ -80,9 +82,4 @@ public class ProjectController {
     public List<TestCaseDao> getAllTestCases(@PathVariable int id) {
         return projectService.findAllTestCases(id);
     }
-//
-//    @GetMapping("/{id}/task")
-//    public TaskDao getTask(@PathVariable int id) {
-//        return projectService.getTask(id);
-//    }
 }

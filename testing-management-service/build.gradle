@@ -1,5 +1,6 @@
 dependencies {
     implementation project(':jdbc-postgres-client')
+    implementation project(':task-management-client')
     implementation project(':web-utils')
 
     implementation 'org.springframework.boot:spring-boot-starter-web'

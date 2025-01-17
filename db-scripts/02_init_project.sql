@@ -1,31 +1,15 @@
-CREATE TABLE tasks (
-    id SERIAL PRIMARY KEY,
-    description VARCHAR(255),
-    project_id INT,
-    test_plan_id INT
-);
-
 CREATE TABLE projects (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    task_id INT,
-    FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE CASCADE
+    name VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE test_plans (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
+    task_key VARCHAR(255) NOT NULL,
     project_id INT,
-    task_id INT,
-    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
-    FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE CASCADE
+    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
 );
-
-ALTER TABLE tasks ADD
-    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE SET NULL;
-
-ALTER TABLE tasks ADD
-    FOREIGN KEY (test_plan_id) REFERENCES test_plans(id) ON DELETE SET NULL;
 
 CREATE TABLE test_cases (
     id SERIAL PRIMARY KEY,
@@ -47,20 +31,11 @@ CREATE TABLE steps (
     FOREIGN KEY (test_case_id) REFERENCES test_cases(id) ON DELETE CASCADE
 );
 
+INSERT INTO projects (name) VALUES ('Project Alpha');
+INSERT INTO projects (name) VALUES ('Project Beta');
 
-INSERT INTO tasks (description)
-VALUES
-    ('Task 1 description'),
-    ('Task 2 description'),
-    ('Task 3 description');
-
-INSERT INTO projects (name, task_id) VALUES ('Project Alpha', 1);
-UPDATE tasks SET project_id = 1 WHERE id = 1;
-
-INSERT INTO test_plans (name, project_id, task_id) VALUES ('Test Plan 1', 1, 2);
-UPDATE tasks SET test_plan_id = 1 WHERE id = 2;
-
-INSERT INTO test_plans (name, project_id) VALUES ('Test Plan 2', 1);
+INSERT INTO test_plans (name, task_key, project_id) VALUES ('Test Plan 1', 'BCA-007', 2);
+INSERT INTO test_plans (name, task_key) VALUES ('Test Plan 2', 'ABC-001');
 
 INSERT INTO test_cases (name, pre_condition, post_condition, test_plan_id)
 VALUES ('Test Case 1', 'Pre Condition 1', 'Post Condition 1', 1);

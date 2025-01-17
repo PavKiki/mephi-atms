@@ -5,8 +5,8 @@ import ru.dsis.atms.testmanagement.dto.TestPlanDto;
 public class TestPlanDao {
     private int id;
     private String name;
+    private String taskKey;
     private Integer projectId;
-    private Integer taskId;
 
     public int getId() {
         return id;
@@ -32,19 +32,19 @@ public class TestPlanDao {
         this.projectId = projectId;
     }
 
-    public Integer getTaskId() {
-        return taskId;
+    public String getTaskKey() {
+        return taskKey;
     }
 
-    public void setTaskId(Integer taskId) {
-        this.taskId = taskId;
+    public void setTaskKey(String taskKey) {
+        this.taskKey = taskKey;
     }
 
     public TestPlanDto toDto() {
         var testPlanDto = new TestPlanDto();
         testPlanDto.setName(name);
+        testPlanDto.setTaskKey(taskKey);
         testPlanDto.setProjectId(projectId);
-        testPlanDto.setTaskId(taskId);
 
         return testPlanDto;
     }

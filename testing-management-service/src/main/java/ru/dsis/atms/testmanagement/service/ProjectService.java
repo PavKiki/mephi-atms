@@ -3,7 +3,6 @@ package ru.dsis.atms.testmanagement.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.dsis.atms.testmanagement.dao.ProjectDao;
-import ru.dsis.atms.testmanagement.dao.TaskDao;
 import ru.dsis.atms.testmanagement.dao.TestCaseDao;
 import ru.dsis.atms.testmanagement.dao.TestPlanDao;
 import ru.dsis.atms.testmanagement.dto.ProjectDto;
@@ -42,9 +41,6 @@ public class ProjectService {
         if (projectDto.getName() != null) {
             existingProject.setName(projectDto.getName());
         }
-        if (projectDto.getTaskId() != null) {
-            existingProject.setTaskId(projectDto.getTaskId());
-        }
 
         return projectRepository.update(id, existingProject.toDto());
     }
@@ -60,8 +56,4 @@ public class ProjectService {
     public List<TestCaseDao> findAllTestCases(int id) {
         return projectRepository.findAllTestCases(id);
     }
-
-//    public TaskDao getTask(int id) {
-//        return projectRepository.getTask(id);
-//    }
 }

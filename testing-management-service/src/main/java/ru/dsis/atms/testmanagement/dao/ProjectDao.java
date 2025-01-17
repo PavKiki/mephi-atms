@@ -5,7 +5,6 @@ import ru.dsis.atms.testmanagement.dto.ProjectDto;
 public class ProjectDao {
     private int id;
     private String name;
-    private Integer taskId;
 
     public int getId() {
         return id;
@@ -23,18 +22,9 @@ public class ProjectDao {
         this.name = name;
     }
 
-    public Integer getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(Integer taskId) {
-        this.taskId = taskId;
-    }
-
     public ProjectDto toDto() {
         var projectDto = new ProjectDto();
         projectDto.setName(name);
-        projectDto.setTaskId(taskId);
 
         return projectDto;
     }
