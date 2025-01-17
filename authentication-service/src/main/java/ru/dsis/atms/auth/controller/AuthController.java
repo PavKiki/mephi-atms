@@ -38,4 +38,20 @@ public class AuthController {
         }
         return new ResponseEntity<>(new ErrorResponse("Invalid token"), HttpStatus.UNAUTHORIZED);
     }
+
+    @GetMapping("/token/public")
+    public ResponseEntity<Response> getPublicToken() {
+        return new ResponseEntity<>(new SuccessResponse(authService.generatePublicApiToken()), HttpStatus.OK);
+    }
+
+    @GetMapping("/validate/public")
+    public ResponseEntity<Response> validatePublicApiToken(@RequestHeader("Authorization") String token) {
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+            if (authService.validatePublicApiToken(token)) {
+                return new ResponseEntity<>(new SuccessResponse("Validated successfully"), HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(new ErrorResponse("Invalid token"), HttpStatus.UNAUTHORIZED);
+    }
 }

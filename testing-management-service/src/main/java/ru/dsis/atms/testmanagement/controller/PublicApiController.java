@@ -27,7 +27,7 @@ public class PublicApiController {
         return projectService.findAll();
     }
 
-    @GetMapping("/tasks/{taskKey}/status")
+    @GetMapping("/tasks/{taskId}/status")
     public List<TaskDao> getAllTasks(@PathVariable String taskKey) {
         return publicApiService.getStatus(taskKey);
     }

@@ -26,6 +26,10 @@ public class AuthService {
         return token;
     }
 
+    public String generatePublicApiToken() {
+        return jwtProvider.generatePublicApiToken();
+    }
+
     public boolean validateToken(String token) {
         var claims = jwtProvider.validateToken(token);
         if (claims != null) {
@@ -33,5 +37,10 @@ public class AuthService {
         } else {
             return false;
         }
+    }
+
+    public boolean validatePublicApiToken(String token) {
+        var claims = jwtProvider.validatePublicApiToken(token);
+        return claims != null;
     }
 }

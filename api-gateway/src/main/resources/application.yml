@@ -7,7 +7,8 @@ spring:
         corsConfigurations:
           '[/**]':
             allowedOrigins:
-              - "http://127.0.0.1:5173"
+              - "http://localhost"
+              - "http://127.0.0.1"
               - "http://147.45.146.190"
             allowedMethods:
               - GET
@@ -24,6 +25,13 @@ spring:
             - Path=/api/auth/login
           filters:
             - StripPrefix=1
+
+        - id: public-api
+          uri: http://testing-management-service-container:50003
+          predicates:
+            - Path=/public/**
+          filters:
+            - name: PublicJwtValidation
 
         - id: users-service
           uri: http://users-service-container:50002

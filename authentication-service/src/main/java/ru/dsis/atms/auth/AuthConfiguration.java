@@ -13,8 +13,11 @@ public class AuthConfiguration {
     @Value("${auth.service.jwt.expiration.time}")
     private long expirationTime;
 
+    @Value("${auth.service.jwt.public.api.secret.key}")
+    private String publicApiSecretKey;
+
     @Bean
     public JwtProvider jwtProvider() {
-        return new JwtProvider(expirationTime, secretKey);
+        return new JwtProvider(expirationTime, secretKey, publicApiSecretKey);
     }
 }

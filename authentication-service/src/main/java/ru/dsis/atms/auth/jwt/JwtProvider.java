@@ -16,10 +16,12 @@ public class JwtProvider {
 
     private final long expirationTime;
     private final SecretKey secretKey;
+    private final SecretKey publicApiSecretKey;
 
-    public JwtProvider(long expirationTime, String secret) {
+    public JwtProvider(long expirationTime, String secret, String publicApiSecret) {
         this.expirationTime = expirationTime;
         this.secretKey = Keys.hmacShaKeyFor(secret.getBytes());
+        this.publicApiSecretKey = Keys.hmacShaKeyFor(publicApiSecret.getBytes());;
     }
 
     public String generateToken(UserInfo userInfo) {
@@ -32,6 +34,29 @@ public class JwtProvider {
                    .expiration(new Date(System.currentTimeMillis() + expirationTime))
                    .signWith(secretKey)
                    .compact();
+    }
+
+    public String generatePublicApiToken() {
+        return Jwts.builder()
+                   .subject("Public token")
+                   .issuedAt(new Date())
+                   .expiration(new Date(Long.MAX_VALUE))
+                   .signWith(secretKey)
+                   .compact();
+    }
+
+    public Claims validatePublicApiToken(String token) {
+        try {
+            var jwtParser = Jwts.parser()
+                                .verifyWith(secretKey)
+                                .decryptWith(secretKey)
+                                .build();
+
+            return jwtParser.parseSignedClaims(token).getPayload();
+        } catch (Exception e) {
+            log.error("Invalid public api token ", e);
+            return null;
+        }
     }
 
     public Claims validateToken(String token) {
