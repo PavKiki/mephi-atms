@@ -56,20 +56,16 @@ class ProjectRepository(val jdbcTemplate: JdbcTemplate) {
 
     fun findAllTestPlans(id: Int): List<TestPlanDao> {
         val sql = """
-            SELECT * FROM projects
-            INNER JOIN test_plans 
-            ON projects.id = test_plans.project_id
-            WHERE projects.id = ?
+            SELECT * FROM test_plans
+            WHERE project_id = ?
         """.trimIndent()
         return jdbcTemplate.query(sql, TestPlanRepository.TestPlanDaoRowMapper(), id)
     }
 
     fun findAllTestCases(id: Int): List<TestCaseDao> {
         val sql = """
-            SELECT * FROM projects
-            INNER JOIN test_cases
-            ON projects.id = test_cases.project_id
-            WHERE projects.id = ?
+            SELECT * FROM test_cases
+            WHERE project_id = ?
         """.trimIndent()
         return jdbcTemplate.query(sql, TestCaseRepository.TestCaseDaoRowMapper(), id)
     }

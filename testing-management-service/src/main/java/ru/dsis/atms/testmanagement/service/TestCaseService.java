@@ -2,6 +2,7 @@ package ru.dsis.atms.testmanagement.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.dsis.atms.testmanagement.dao.StepDao;
 import ru.dsis.atms.testmanagement.dao.TestCaseDao;
 import ru.dsis.atms.testmanagement.dto.TestCaseDto;
 import ru.dsis.atms.testmanagement.repository.TestCaseRepository;
@@ -56,5 +57,9 @@ public class TestCaseService {
 
     public boolean delete(int id) {
         return testCaseRepository.delete(id);
+    }
+
+    public List<StepDao> getSteps(int id) {
+        return testCaseRepository.getSteps(id);
     }
 }
