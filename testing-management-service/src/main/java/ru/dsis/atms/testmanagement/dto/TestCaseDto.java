@@ -1,9 +1,12 @@
 package ru.dsis.atms.testmanagement.dto;
 
+import ru.dsis.atms.testmanagement.Status;
+
 public class TestCaseDto {
     private String name;
     private String preCondition;
     private String postCondition;
+    private Status status;
     private Integer projectId;
     private Integer testPlanId;
 
@@ -45,5 +48,13 @@ public class TestCaseDto {
 
     public void setTestPlanId(Integer testPlanId) {
         this.testPlanId = testPlanId;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

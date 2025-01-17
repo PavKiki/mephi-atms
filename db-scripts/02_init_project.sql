@@ -1,3 +1,5 @@
+CREATE TYPE TASK_STATUS_ENUM AS ENUM ('SUCCESS', 'FAIL', 'TO DO');
+
 CREATE TABLE projects (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL
@@ -7,7 +9,7 @@ CREATE TABLE test_plans (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     task_key VARCHAR(255) NOT NULL,
-    status BOOLEAN DEFAULT FALSE,
+    status TASK_STATUS_ENUM DEFAULT 'TO DO',
     project_id INT NOT NULL,
     FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
 );
@@ -17,7 +19,7 @@ CREATE TABLE test_cases (
     name VARCHAR(255) NOT NULL,
     pre_condition VARCHAR(255),
     post_condition VARCHAR(255),
-    status BOOLEAN DEFAULT FALSE,
+    status TASK_STATUS_ENUM DEFAULT 'TO DO',
     project_id INT,
     test_plan_id INT,
     FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
@@ -30,8 +32,8 @@ CREATE TABLE steps (
     action VARCHAR(255),
     expected_result VARCHAR(255),
     actual_result VARCHAR(255),
-    status BOOLEAN DEFAULT FALSE,
-    test_case_id INT,
+    status TASK_STATUS_ENUM DEFAULT 'TO DO',
+    test_case_id INT NOT NULL,
     FOREIGN KEY (test_case_id) REFERENCES test_cases(id) ON DELETE CASCADE
 );
 
@@ -50,15 +52,15 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION update_test_case_status()
 RETURNS TRIGGER AS $$
 BEGIN
-    IF NEW.status = TRUE AND OLD.status = FALSE THEN
+    IF NEW.status = 'SUCCESS' AND (OLD.status = 'FAIL' OR OLD.status = 'TO DO') THEN
         IF NOT EXISTS (
             SELECT 1
             FROM steps
             WHERE test_case_id = NEW.test_case_id
-            AND status = FALSE
+            AND (status = 'FAIL' OR status = 'TO DO')
         ) THEN
             UPDATE test_cases
-            SET status = TRUE
+            SET status = 'SUCCESS'
             WHERE id = NEW.test_case_id;
         END IF;
     END IF;
@@ -69,15 +71,15 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION update_test_plan_status()
 RETURNS TRIGGER AS $$
 BEGIN
-    IF NEW.status = TRUE AND NEW.test_plan_id IS NOT NULL THEN
+    IF NEW.status = 'SUCCESS' AND (OLD.status = 'FAIL' OR OLD.status = 'TO DO') AND NEW.test_plan_id IS NOT NULL THEN
         IF NOT EXISTS (
             SELECT 1
             FROM test_cases
             WHERE test_plan_id = NEW.test_plan_id
-            AND status = FALSE
+            AND (status = 'FAIL' OR status = 'TO DO')
         ) THEN
             UPDATE test_plans
-            SET status = TRUE
+            SET status = 'SUCCESS'
             WHERE id = NEW.test_plan_id;
         END IF;
     END IF;
@@ -93,13 +95,13 @@ EXECUTE FUNCTION set_project_id_on_test_case_insert();
 CREATE TRIGGER check_steps_status
 AFTER UPDATE OF status ON steps
 FOR EACH ROW
-WHEN (NEW.status = TRUE)
+WHEN (NEW.status = 'SUCCESS')
 EXECUTE FUNCTION update_test_case_status();
 
 CREATE TRIGGER check_test_cases_status
 AFTER UPDATE OF status ON test_cases
 FOR EACH ROW
-WHEN (NEW.status = TRUE)
+WHEN (NEW.status = 'SUCCESS')
 EXECUTE FUNCTION update_test_plan_status();
 
 INSERT INTO projects (name) VALUES ('Project Alpha');
