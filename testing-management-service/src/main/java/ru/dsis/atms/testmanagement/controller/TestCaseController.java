@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.dsis.atms.testmanagement.dao.StepDao;
 import ru.dsis.atms.testmanagement.dao.TestCaseDao;
 import ru.dsis.atms.testmanagement.dto.TestCaseDto;
 import ru.dsis.atms.testmanagement.service.TestCaseService;
@@ -66,5 +67,10 @@ public class TestCaseController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/{id}/steps")
+    public List<StepDao> getSteps(@PathVariable int id) {
+        return testCaseService.getSteps(id);
     }
 }

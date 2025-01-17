@@ -4,6 +4,7 @@ import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import ru.dsis.atms.jdbc.util.nullIfZero
+import ru.dsis.atms.testmanagement.dao.StepDao
 import ru.dsis.atms.testmanagement.dao.TestCaseDao
 import ru.dsis.atms.testmanagement.dto.TestCaseDto
 import java.sql.ResultSet
@@ -51,6 +52,14 @@ class TestCaseRepository(val jdbcTemplate: JdbcTemplate) {
             WHERE id = ?
         """.trimIndent()
         return jdbcTemplate.update(sql, id) > 0
+    }
+
+    fun getSteps(id: Int): List<StepDao> {
+        val sql = """
+            SELECT * FROM steps
+            WHERE test_case_id = ?
+        """.trimIndent()
+        return jdbcTemplate.query(sql, StepsRepository.StepDaoRowMapper(), id)
     }
 
     internal class TestCaseDaoRowMapper : RowMapper<TestCaseDao> {
