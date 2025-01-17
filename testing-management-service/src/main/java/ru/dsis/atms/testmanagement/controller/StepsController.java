@@ -37,6 +37,7 @@ public class StepsController {
         }
     }
 
+    //Delete steps
     @PutMapping("/{id}")
     public ResponseEntity<StepDao> updateStep(@PathVariable int id, @RequestBody StepDto stepDto) {
         var updatedStep = stepsService.update(id, stepDto);

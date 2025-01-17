@@ -2,16 +2,14 @@ package ru.dsis.atms.testmanagement.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.dsis.atms.client.tasks.TasksManagementClient;
 import ru.dsis.atms.client.tasks.dao.TaskDao;
 import ru.dsis.atms.client.tasks.dao.TaskManagementProjectDao;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/task-management")
 public class TaskManagementController {
@@ -25,6 +23,7 @@ public class TaskManagementController {
     @Autowired
     private TasksManagementClient tasksManagementClient;
 
+    //no task managementProjectDao, but id with name
     @GetMapping("/projects")
     public List<TaskManagementProjectDao> fetchProjects() {
         return tasksManagementClient.fetchProjects(fetchProjectsEndpoint);

@@ -10,6 +10,8 @@ spring:
               - "http://localhost"
               - "http://127.0.0.1"
               - "http://147.45.146.190"
+              - "http://195.133.145.69"
+              - "https://195.133.145.69"
             allowedMethods:
               - GET
               - POST

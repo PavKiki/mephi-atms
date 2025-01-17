@@ -23,6 +23,7 @@ public class TestCaseController {
         return testCaseService.findAll();
     }
 
+    //delete projectId from dto
     @GetMapping("/{id}")
     public ResponseEntity<TestCaseDao> getTestCaseById(@PathVariable int id) {
         TestCaseDao testCaseDao = testCaseService.findById(id);
