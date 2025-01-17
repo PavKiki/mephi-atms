@@ -7,7 +7,8 @@ spring:
         corsConfigurations:
           '[/**]':
             allowedOrigins:
-              - "http://localhost:5173"
+              - "http://127.0.0.1"
+              - "http://147.45.146.190"
             allowedMethods:
               - GET
               - POST
