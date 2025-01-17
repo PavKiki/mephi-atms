@@ -1,5 +1,6 @@
 package ru.dsis.atms.testmanagement.dao;
 
+import ru.dsis.atms.testmanagement.Status;
 import ru.dsis.atms.testmanagement.dto.StepDto;
 
 public class StepDao {
@@ -8,7 +9,7 @@ public class StepDao {
     private String action;
     private String expectedResult;
     private String actualResult;
-    private boolean status;
+    private Status status;
     private Integer testCaseId;
 
     public int getId() {
@@ -51,11 +52,11 @@ public class StepDao {
         this.actualResult = actualResult;
     }
 
-    public boolean getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

@@ -1,11 +1,13 @@
 package ru.dsis.atms.testmanagement.dao;
 
+import ru.dsis.atms.testmanagement.Status;
 import ru.dsis.atms.testmanagement.dto.TestPlanDto;
 
 public class TestPlanDao {
     private int id;
     private String name;
     private String taskKey;
+    private Status status;
     private Integer projectId;
 
     public int getId() {
@@ -40,10 +42,19 @@ public class TestPlanDao {
         this.taskKey = taskKey;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     public TestPlanDto toDto() {
         var testPlanDto = new TestPlanDto();
         testPlanDto.setName(name);
         testPlanDto.setTaskKey(taskKey);
+        testPlanDto.setStatus(status);
         testPlanDto.setProjectId(projectId);
 
         return testPlanDto;

@@ -1,11 +1,13 @@
 package ru.dsis.atms.testmanagement.dto;
 
+import ru.dsis.atms.testmanagement.Status;
+
 public class StepDto {
     private Integer ordering;
     private String action;
     private String expectedResult;
     private String actualResult;
-    private Boolean status;
+    private Status status;
     private Integer testCaseId;
 
     public Integer getOrdering() {
@@ -40,11 +42,11 @@ public class StepDto {
         this.actualResult = actualResult;
     }
 
-    public Boolean getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

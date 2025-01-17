@@ -4,6 +4,7 @@ import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import ru.dsis.atms.jdbc.util.nullIfZero
+import ru.dsis.atms.testmanagement.Status
 import ru.dsis.atms.testmanagement.dao.StepDao
 import ru.dsis.atms.testmanagement.dao.TestCaseDao
 import ru.dsis.atms.testmanagement.dto.TestCaseDto
@@ -29,21 +30,21 @@ class TestCaseRepository(val jdbcTemplate: JdbcTemplate) {
 
     fun save(testCaseDto: TestCaseDto): TestCaseDao {
         val sql = """
-            INSERT INTO test_cases (name, pre_condition, post_condition, test_plan_id, project_id)
-            VALUES (?, ?, ?, ?, ?)
-            RETURNING id, name, pre_condition, post_condition, test_plan_id, project_id
+            INSERT INTO test_cases (name, pre_condition, post_condition, status, test_plan_id, project_id)
+            VALUES (?, ?, ?, ?::TASK_STATUS_ENUM, ?, ?)
+            RETURNING id, name, pre_condition, post_condition, status, test_plan_id, project_id
         """.trimIndent()
-        return jdbcTemplate.queryForObject(sql, TestCaseDaoRowMapper(), testCaseDto.name, testCaseDto.preCondition, testCaseDto.postCondition, testCaseDto.testPlanId, testCaseDto.projectId)!!
+        return jdbcTemplate.queryForObject(sql, TestCaseDaoRowMapper(), testCaseDto.name, testCaseDto.preCondition, testCaseDto.postCondition, testCaseDto.status.name, testCaseDto.testPlanId, testCaseDto.projectId)!!
     }
 
     fun update(id: Int, testCaseDto: TestCaseDto): TestCaseDao? {
         val sql = """
             UPDATE test_cases
-            SET name = ?, pre_condition = ?, post_condition = ?, test_plan_id = ?, project_id = ?
+            SET name = ?, pre_condition = ?, post_condition = ?, status = ?::TASK_STATUS_ENUM, test_plan_id = ?, project_id = ?
             WHERE id = ?
-            RETURNING id, name, pre_condition, post_condition, test_plan_id, project_id
+            RETURNING id, name, pre_condition, post_condition, status, test_plan_id, project_id
         """.trimIndent()
-        return jdbcTemplate.queryForObject(sql, TestCaseDaoRowMapper(), testCaseDto.name, testCaseDto.preCondition, testCaseDto.postCondition, testCaseDto.testPlanId, testCaseDto.projectId, id)
+        return jdbcTemplate.queryForObject(sql, TestCaseDaoRowMapper(), testCaseDto.name, testCaseDto.preCondition, testCaseDto.postCondition, testCaseDto.status.name, testCaseDto.testPlanId, testCaseDto.projectId, id)
     }
 
     fun delete(id: Int): Boolean {
@@ -70,6 +71,7 @@ class TestCaseRepository(val jdbcTemplate: JdbcTemplate) {
             testCaseDao.name = rs.getString("name")
             testCaseDao.preCondition = rs.getString("pre_condition")
             testCaseDao.postCondition = rs.getString("post_condition")
+            testCaseDao.status = Status.valueOf(rs.getString("status"))
             testCaseDao.testPlanId = nullIfZero(rs.getInt("test_plan_id"))
             testCaseDao.projectId = nullIfZero(rs.getInt("project_id"))
             return testCaseDao

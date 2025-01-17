@@ -40,6 +40,9 @@ public class TestPlanService {
         if (testPlanDto.getName() != null) {
             existingTestPlan.setName(testPlanDto.getName());
         }
+        if (testPlanDto.getStatus() != null) {
+            existingTestPlan.setStatus(testPlanDto.getStatus());
+        }
         if (testPlanDto.getProjectId() != null) {
             existingTestPlan.setProjectId(testPlanDto.getProjectId());
         }

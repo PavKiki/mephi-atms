@@ -1,8 +1,11 @@
 package ru.dsis.atms.testmanagement.dto;
 
+import ru.dsis.atms.testmanagement.Status;
+
 public class TestPlanDto {
     private String name;
     private String taskKey;
+    private Status status;
     private Integer projectId;
 
     public String getName() {
@@ -27,5 +30,13 @@ public class TestPlanDto {
 
     public void setTaskKey(String taskKey) {
         this.taskKey = taskKey;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

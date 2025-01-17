@@ -46,6 +46,9 @@ public class TestCaseService {
         if (testCaseDto.getPostCondition() != null) {
             existingTestCase.setPostCondition(testCaseDto.getPostCondition());
         }
+        if (testCaseDto.getStatus() != null) {
+            existingTestCase.setStatus(testCaseDto.getStatus());
+        }
         if (testCaseDto.getTestPlanId() != null) {
             existingTestCase.setTestPlanId(testCaseDto.getTestPlanId());
         }
