@@ -28,21 +28,21 @@ class TestPlanRepository(val jdbcTemplate: JdbcTemplate) {
 
     fun save(testPlanDto: TestPlanDto): TestPlanDao {
         val sql = """
-            INSERT INTO test_plans (name, project_id, task_id) 
+            INSERT INTO test_plans (name, project_id, task_key) 
             VALUES (?, ?, ?)
-            RETURNING id, name, project_id, task_id
+            RETURNING id, name, project_id, task_key
         """.trimIndent()
-        return jdbcTemplate.queryForObject(sql, TestPlanDaoRowMapper(), testPlanDto.name, testPlanDto.projectId, testPlanDto.taskId)!!
+        return jdbcTemplate.queryForObject(sql, TestPlanDaoRowMapper(), testPlanDto.name, testPlanDto.projectId, testPlanDto.taskKey)!!
     }
 
     fun update(id: Int, testPlanDto: TestPlanDto): TestPlanDao? {
         val sql = """
             UPDATE test_plans
-            SET name = ?, project_id = ?, task_id = ?
+            SET name = ?, project_id = ?, task_key = ?
             WHERE id = ?
-            RETURNING id, name, project_id, task_id
+            RETURNING id, name, project_id, task_key
         """.trimIndent()
-        return jdbcTemplate.queryForObject(sql, TestPlanDaoRowMapper(), testPlanDto.name, testPlanDto.projectId, testPlanDto.taskId, id)
+        return jdbcTemplate.queryForObject(sql, TestPlanDaoRowMapper(), testPlanDto.name, testPlanDto.projectId, testPlanDto.taskKey, id)
     }
 
     fun delete(id: Int): Boolean {
@@ -59,8 +59,8 @@ class TestPlanRepository(val jdbcTemplate: JdbcTemplate) {
             val testPlanDao = TestPlanDao()
             testPlanDao.id = rs.getInt("id")
             testPlanDao.name = rs.getString("name")
+            testPlanDao.taskKey = rs.getString("task_key")
             testPlanDao.projectId = nullIfZero(rs.getInt("project_id"))
-            testPlanDao.taskId = nullIfZero(rs.getInt("task_id"))
             return testPlanDao
         }
     }

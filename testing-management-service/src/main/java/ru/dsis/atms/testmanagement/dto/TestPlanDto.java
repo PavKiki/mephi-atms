@@ -2,8 +2,8 @@ package ru.dsis.atms.testmanagement.dto;
 
 public class TestPlanDto {
     private String name;
+    private String taskKey;
     private Integer projectId;
-    private Integer taskId;
 
     public String getName() {
         return name;
@@ -21,11 +21,11 @@ public class TestPlanDto {
         this.projectId = projectId;
     }
 
-    public Integer getTaskId() {
-        return taskId;
+    public String getTaskKey() {
+        return taskKey;
     }
 
-    public void setTaskId(Integer taskId) {
-        this.taskId = taskId;
+    public void setTaskKey(String taskKey) {
+        this.taskKey = taskKey;
     }
 }

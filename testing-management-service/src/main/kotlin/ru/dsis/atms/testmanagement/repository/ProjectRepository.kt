@@ -3,9 +3,7 @@ package ru.dsis.atms.testmanagement.repository
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
-import ru.dsis.atms.jdbc.util.nullIfZero
 import ru.dsis.atms.testmanagement.dao.ProjectDao
-import ru.dsis.atms.testmanagement.dao.TaskDao
 import ru.dsis.atms.testmanagement.dao.TestCaseDao
 import ru.dsis.atms.testmanagement.dao.TestPlanDao
 import ru.dsis.atms.testmanagement.dto.ProjectDto
@@ -31,21 +29,21 @@ class ProjectRepository(val jdbcTemplate: JdbcTemplate) {
 
     fun save(projectDto: ProjectDto): ProjectDao {
         val sql = """
-            INSERT INTO projects (name, task_id) 
-            VALUES (?, ?) 
-            RETURNING id, name, task_id
+            INSERT INTO projects (name) 
+            VALUES (?) 
+            RETURNING id, name
         """.trimIndent()
-        return jdbcTemplate.queryForObject(sql, ProjectDaoRowMapper(), projectDto.name, projectDto.taskId)!!
+        return jdbcTemplate.queryForObject(sql, ProjectDaoRowMapper(), projectDto.name)!!
     }
 
     fun update(id: Int, projectDto: ProjectDto): ProjectDao? {
         val sql = """
             UPDATE projects
-            SET name = ?, task_id = ?
+            SET name = ?
             WHERE id = ?
-            RETURNING id, name, task_id
+            RETURNING id, name
         """.trimIndent()
-        return jdbcTemplate.queryForObject(sql, ProjectDaoRowMapper(), projectDto.name, projectDto.taskId, id)
+        return jdbcTemplate.queryForObject(sql, ProjectDaoRowMapper(), projectDto.name, id)
     }
 
     fun delete(id: Int): Boolean {
@@ -82,7 +80,6 @@ class ProjectRepository(val jdbcTemplate: JdbcTemplate) {
             val projectDao = ProjectDao()
             projectDao.id = rs.getInt("id")
             projectDao.name = rs.getString("name")
-            projectDao.taskId = nullIfZero(rs.getInt("task_id"))
             return projectDao
         }
     }

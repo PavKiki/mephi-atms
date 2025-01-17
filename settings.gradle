@@ -6,4 +6,4 @@ include ':jdbc-postgres-client'
 include ':authentication-service'
 include 'web-utils'
 include 'testing-management-service'
-
+include 'task-management-client'

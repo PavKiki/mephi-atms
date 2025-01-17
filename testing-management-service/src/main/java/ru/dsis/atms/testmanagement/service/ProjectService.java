@@ -3,7 +3,6 @@ package ru.dsis.atms.testmanagement.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.dsis.atms.testmanagement.dao.ProjectDao;
-import ru.dsis.atms.testmanagement.dao.TaskDao;
 import ru.dsis.atms.testmanagement.dao.TestCaseDao;
 import ru.dsis.atms.testmanagement.dao.TestPlanDao;
 import ru.dsis.atms.testmanagement.dto.ProjectDto;
