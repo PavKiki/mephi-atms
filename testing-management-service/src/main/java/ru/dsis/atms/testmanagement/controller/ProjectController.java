@@ -80,9 +80,4 @@ public class ProjectController {
     public List<TestCaseDao> getAllTestCases(@PathVariable int id) {
         return projectService.findAllTestCases(id);
     }
-//
-//    @GetMapping("/{id}/task")
-//    public TaskDao getTask(@PathVariable int id) {
-//        return projectService.getTask(id);
-//    }
 }
