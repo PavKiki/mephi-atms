@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.dsis.atms.testmanagement.dao.StepDao;
 import ru.dsis.atms.testmanagement.dao.TestCaseDao;
+import ru.dsis.atms.testmanagement.dto.TestCaseCreationDto;
 import ru.dsis.atms.testmanagement.dto.TestCaseDto;
 import ru.dsis.atms.testmanagement.service.TestCaseService;
 
@@ -35,8 +36,8 @@ public class TestCaseController {
     }
 
     @PostMapping
-    public ResponseEntity<TestCaseDao> createTestCase(@RequestBody TestCaseDto testCaseDto) {
-        TestCaseDao createdTestCaseDao = testCaseService.save(testCaseDto);
+    public ResponseEntity<TestCaseDao> createTestCase(@RequestBody TestCaseCreationDto testCaseCreationDto) {
+        TestCaseDao createdTestCaseDao = testCaseService.save(testCaseCreationDto);
         return new ResponseEntity<>(createdTestCaseDao, HttpStatus.CREATED);
     }
 

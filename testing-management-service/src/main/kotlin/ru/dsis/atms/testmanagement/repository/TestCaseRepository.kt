@@ -7,6 +7,7 @@ import ru.dsis.atms.jdbc.util.nullIfZero
 import ru.dsis.atms.testmanagement.Status
 import ru.dsis.atms.testmanagement.dao.StepDao
 import ru.dsis.atms.testmanagement.dao.TestCaseDao
+import ru.dsis.atms.testmanagement.dto.TestCaseCreationDto
 import ru.dsis.atms.testmanagement.dto.TestCaseDto
 import java.sql.ResultSet
 import java.sql.SQLException
@@ -28,13 +29,13 @@ class TestCaseRepository(val jdbcTemplate: JdbcTemplate) {
         return jdbcTemplate.queryForObject(sql, TestCaseDaoRowMapper(), id)
     }
 
-    fun save(testCaseDto: TestCaseDto): TestCaseDao {
+    fun save(testCaseCreationDto: TestCaseCreationDto): TestCaseDao {
         val sql = """
-            INSERT INTO test_cases (name, pre_condition, post_condition, status, test_plan_id, project_id)
-            VALUES (?, ?, ?, ?::TASK_STATUS_ENUM, ?, ?)
+            INSERT INTO test_cases (name, pre_condition, post_condition, test_plan_id)
+            VALUES (?, ?, ?, ?)
             RETURNING id, name, pre_condition, post_condition, status, test_plan_id, project_id
         """.trimIndent()
-        return jdbcTemplate.queryForObject(sql, TestCaseDaoRowMapper(), testCaseDto.name, testCaseDto.preCondition, testCaseDto.postCondition, testCaseDto.status.name, testCaseDto.testPlanId, testCaseDto.projectId)!!
+        return jdbcTemplate.queryForObject(sql, TestCaseDaoRowMapper(), testCaseCreationDto.name, testCaseCreationDto.preCondition, testCaseCreationDto.postCondition, testCaseCreationDto.testPlanId)!!
     }
 
     fun update(id: Int, testCaseDto: TestCaseDto): TestCaseDao? {

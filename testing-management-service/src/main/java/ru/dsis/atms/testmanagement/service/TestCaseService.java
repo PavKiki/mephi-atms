@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.dsis.atms.testmanagement.dao.StepDao;
 import ru.dsis.atms.testmanagement.dao.TestCaseDao;
+import ru.dsis.atms.testmanagement.dto.TestCaseCreationDto;
 import ru.dsis.atms.testmanagement.dto.TestCaseDto;
 import ru.dsis.atms.testmanagement.repository.TestCaseRepository;
 
@@ -23,8 +24,8 @@ public class TestCaseService {
         return testCaseRepository.findById(id);
     }
 
-    public TestCaseDao save(TestCaseDto testCaseDto) {
-        return testCaseRepository.save(testCaseDto);
+    public TestCaseDao save(TestCaseCreationDto testCaseCreationDto) {
+        return testCaseRepository.save(testCaseCreationDto);
     }
 
     public TestCaseDao update(int id, TestCaseDto testCaseDto) {
