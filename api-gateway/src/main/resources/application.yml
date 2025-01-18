@@ -53,4 +53,5 @@ spring:
           predicates:
             - Path=/public/**
           filters:
+            - StripPrefix=1
             - name: PublicJwtValidation

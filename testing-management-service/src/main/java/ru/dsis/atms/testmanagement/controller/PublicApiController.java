@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.dsis.atms.client.tasks.dao.TaskDao;
 import ru.dsis.atms.testmanagement.dao.ProjectDao;
+import ru.dsis.atms.testmanagement.dto.TaskStatusDto;
 import ru.dsis.atms.testmanagement.service.ProjectService;
 import ru.dsis.atms.testmanagement.service.PublicApiService;
 
@@ -28,7 +28,7 @@ public class PublicApiController {
     }
 
     @GetMapping("/tasks/{taskId}/status")
-    public List<TaskDao> getAllTasks(@PathVariable String taskKey) {
-        return publicApiService.getStatus(taskKey);
+    public TaskStatusDto getAllTasks(@PathVariable Long taskId) {
+        return publicApiService.getStatus(taskId);
     }
 }

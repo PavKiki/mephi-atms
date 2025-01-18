@@ -15,11 +15,21 @@ public class GatewayConfig {
     @Value("${atms.auth.service.server.validation.endpoint}")
     private String authServiceValidationEndpoint;
 
+    @Value("${atms.auth.service.server.public.api.validation.endpoint}")
+    private String authServicePublicApiValidationEndpoint;
+
     @Bean
     public WebClient authServiceClient() {
         return WebClient.builder()
                         .baseUrl(authServiceBaseUrl + authServiceValidationEndpoint)
                         .build();
+    }
+
+    @Bean(name = "authServicePublicApiValidationClient")
+    public WebClient authServicePublicApiValidationClient() {
+        return WebClient.builder()
+                .baseUrl(authServiceBaseUrl + authServicePublicApiValidationEndpoint)
+                .build();
     }
 
     @Bean
