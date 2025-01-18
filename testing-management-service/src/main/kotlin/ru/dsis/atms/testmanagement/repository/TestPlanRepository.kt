@@ -41,7 +41,7 @@ class TestPlanRepository(val jdbcTemplate: JdbcTemplate) {
     fun update(id: Int, testPlanDto: TestPlanDto): TestPlanDao? {
         val sql = """
             UPDATE test_plans
-            SET name = ?, project_id = ?, status::TASK_STATUS_ENUM = ?, task_id = ?
+            SET name = ?, project_id = ?, status = ?::TASK_STATUS_ENUM, task_id = ?
             WHERE id = ?
             RETURNING id, name, project_id, status, task_id
         """.trimIndent()
