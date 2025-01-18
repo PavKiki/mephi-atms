@@ -9,9 +9,9 @@ spring:
             allowedOrigins:
               - "http://localhost:5173"
               - "http://127.0.0.1:5173"
-              - "http://147.45.146.190"
-              - "http://195.133.145.69"
-              - "https://195.133.145.69"
+              - "http://147.45.146.190:80"
+              - "http://195.133.145.69:8080"
+              - "https://195.133.145.69:8080"
             allowedMethods:
               - GET
               - POST
@@ -22,21 +22,21 @@ spring:
             allowCredentials: true
       routes:
         - id: login
-          uri: http://localhost:50001
+          uri: http://authentication-service-container:50001
           predicates:
             - Path=/api/auth/login
           filters:
             - StripPrefix=1
 
         - id: public-api
-          uri: http://localhost:50003
+          uri: http://testing-management-service-container:50003
           predicates:
             - Path=/public/**
           filters:
             - name: PublicJwtValidation
 
         - id: users-service
-          uri: http://localhost:50002
+          uri: http://users-service-container:50002
           predicates:
             - Path=/api/users/**, /api/roles/**, /api/permissions/**
           filters:
@@ -46,7 +46,7 @@ spring:
                 logMessage: Jwt validation filter executed in users-service
 
         - id: testing-management-service
-          uri: http://localhost:50003
+          uri: http://testing-management-service-container:50003
           predicates:
             - Path=/api/projects/**, /api/test-cases/**, /api/test-plans/**, /api/steps/**
           filters:
