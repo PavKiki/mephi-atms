@@ -18,7 +18,7 @@ public class GatewayConfig {
     @Bean
     public WebClient authServiceClient() {
         return WebClient.builder()
-                        .baseUrl(authServiceValidationEndpoint)
+                        .baseUrl(authServiceBaseUrl + authServiceValidationEndpoint)
                         .build();
     }
 

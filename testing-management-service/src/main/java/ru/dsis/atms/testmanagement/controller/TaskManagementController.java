@@ -9,7 +9,6 @@ import ru.dsis.atms.client.tasks.dao.TaskManagementProjectDao;
 
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/task-management")
 public class TaskManagementController {
