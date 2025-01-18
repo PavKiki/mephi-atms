@@ -6,9 +6,11 @@ public class WebUtils {
 
     public static class TokenResponse implements Response {
         private String token;
+        private String role;
 
-        public TokenResponse(String token) {
+        public TokenResponse(String token, String role) {
             this.token = token;
+            this.role = role;
         }
 
         public String getToken() {
@@ -17,6 +19,14 @@ public class WebUtils {
 
         public void setToken(String token) {
             this.token = token;
+        }
+
+        public String getRole() {
+            return role;
+        }
+
+        public void setRole(String role) {
+            this.role = role;
         }
     }
 

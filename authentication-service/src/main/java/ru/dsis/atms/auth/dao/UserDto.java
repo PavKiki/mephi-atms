@@ -2,7 +2,7 @@ package ru.dsis.atms.auth.dao;
 
 import java.time.ZonedDateTime;
 
-public class UserInfo {
+public class UserDto {
     private String username;
     private String name;
     private String role;

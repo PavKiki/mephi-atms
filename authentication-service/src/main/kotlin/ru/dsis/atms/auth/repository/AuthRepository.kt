@@ -4,14 +4,14 @@ import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import ru.dsis.atms.auth.dao.UserDao
-import ru.dsis.atms.auth.dao.UserInfo
+import ru.dsis.atms.auth.dao.UserDto
 import java.sql.ResultSet
 import java.sql.SQLException
 import java.time.ZoneOffset
 
 @Repository
 class AuthRepository(val jdbcTemplate: JdbcTemplate) {
-    fun findByUserCredentials(userDao: UserDao): UserInfo? {
+    fun findByUserCredentials(userDao: UserDao): UserDto? {
         val sql = """
             SELECT u.username, u.name, u.created_at, u.role_name
             FROM users u 
@@ -28,8 +28,8 @@ class AuthRepository(val jdbcTemplate: JdbcTemplate) {
                    ?: throw IllegalArgumentException("User id was not found by $username")
     }
 
-    fun saveToken(userInfo: UserInfo, token: String) {
-        val userId = userIdByUsername(userInfo.username)
+    fun saveToken(userDto: UserDto, token: String) {
+        val userId = userIdByUsername(userDto.username)
         val sql = """
             INSERT INTO tokens (user_id, token)
             VALUES (?, ?)
@@ -48,10 +48,10 @@ class AuthRepository(val jdbcTemplate: JdbcTemplate) {
         return jdbcTemplate.queryForObject(sql, Boolean::class.java, userId, token)!!
     }
 
-    private class UserInfoRowMapper : RowMapper<UserInfo> {
+    private class UserInfoRowMapper : RowMapper<UserDto> {
         @Throws(SQLException::class)
-        override fun mapRow(rs: ResultSet, rowNum: Int): UserInfo {
-            val user = UserInfo()
+        override fun mapRow(rs: ResultSet, rowNum: Int): UserDto {
+            val user = UserDto()
             user.username = rs.getString("username")
             user.name = rs.getString("name")
             user.role = rs.getString("role_name")
