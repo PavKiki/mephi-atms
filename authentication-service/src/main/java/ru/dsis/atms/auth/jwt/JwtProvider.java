@@ -38,7 +38,7 @@ public class JwtProvider {
 
     public String generatePublicApiToken() {
         return Jwts.builder()
-                   .subject("Public token")
+                   .subject("PublicToken")
                    .issuedAt(new Date())
                    .expiration(new Date(Long.MAX_VALUE))
                    .signWith(secretKey)
