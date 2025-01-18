@@ -39,7 +39,7 @@ class StepsRepository(val jdbcTemplate: JdbcTemplate) {
     fun update(id: Int, stepDto: StepDto): StepDao? {
         val sql = """
             UPDATE steps
-            SET ordering = ?, action = ?, expected_result = ?, actual_result = ?, status::TASK_STATUS_ENUM = ?, test_case_id = ?
+            SET ordering = ?, action = ?, expected_result = ?, actual_result = ?, status = ?::TASK_STATUS_ENUM, test_case_id = ?
             WHERE id = ?
             RETURNING id, ordering, action, expected_result, actual_result, status, test_case_id
         """.trimIndent()
