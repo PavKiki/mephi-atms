@@ -28,13 +28,6 @@ spring:
           filters:
             - StripPrefix=1
 
-        - id: public-api
-          uri: http://localhost:50003
-          predicates:
-            - Path=/public/**
-          filters:
-            - name: PublicJwtValidation
-
         - id: users-service
           uri: http://localhost:50002
           predicates:
@@ -48,9 +41,16 @@ spring:
         - id: testing-management-service
           uri: http://localhost:50003
           predicates:
-            - Path=/api/projects/**, /api/test-cases/**, /api/test-plans/**, /api/steps/**
+            - Path=/api/projects/**, /api/test-cases/**, /api/test-plans/**, /api/steps/**, /api/task-management/**
           filters:
             - StripPrefix=1
             - name: JwtValidation
               args:
                 logMessage: Jwt validation filter executed in testing-management-service
+
+        - id: public-api
+          uri: http://localhost:50003
+          predicates:
+            - Path=/public/**
+          filters:
+            - name: PublicJwtValidation
