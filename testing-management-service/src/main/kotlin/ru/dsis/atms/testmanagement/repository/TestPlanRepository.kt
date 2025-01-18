@@ -7,6 +7,7 @@ import ru.dsis.atms.jdbc.util.nullIfZero
 import ru.dsis.atms.testmanagement.Status
 import ru.dsis.atms.testmanagement.dao.TestCaseDao
 import ru.dsis.atms.testmanagement.dao.TestPlanDao
+import ru.dsis.atms.testmanagement.dto.TestPlanCreationDto
 import ru.dsis.atms.testmanagement.dto.TestPlanDto
 import java.sql.ResultSet
 import java.sql.SQLException
@@ -28,23 +29,23 @@ class TestPlanRepository(val jdbcTemplate: JdbcTemplate) {
         return jdbcTemplate.queryForObject(sql, TestPlanDaoRowMapper(), id)
     }
 
-    fun save(testPlanDto: TestPlanDto): TestPlanDao {
+    fun save(testPlanCreationDto: TestPlanCreationDto): TestPlanDao {
         val sql = """
-            INSERT INTO test_plans (name, project_id, status::TASK_STATUS_ENUM, task_key) 
-            VALUES (?, ?, ?, ?)
-            RETURNING id, name, project_id, status, task_key
+            INSERT INTO test_plans (name, project_id, task_id) 
+            VALUES (?, ?, ?)
+            RETURNING id, name, project_id, status, task_id
         """.trimIndent()
-        return jdbcTemplate.queryForObject(sql, TestPlanDaoRowMapper(), testPlanDto.name, testPlanDto.projectId, testPlanDto.status.name, testPlanDto.taskKey)!!
+        return jdbcTemplate.queryForObject(sql, TestPlanDaoRowMapper(), testPlanCreationDto.name, testPlanCreationDto.projectId, testPlanCreationDto.taskId)!!
     }
 
     fun update(id: Int, testPlanDto: TestPlanDto): TestPlanDao? {
         val sql = """
             UPDATE test_plans
-            SET name = ?, project_id = ?, status::TASK_STATUS_ENUM = ?, task_key = ?
+            SET name = ?, project_id = ?, status::TASK_STATUS_ENUM = ?, task_id = ?
             WHERE id = ?
-            RETURNING id, name, project_id, status, task_key
+            RETURNING id, name, project_id, status, task_id
         """.trimIndent()
-        return jdbcTemplate.queryForObject(sql, TestPlanDaoRowMapper(), testPlanDto.name, testPlanDto.projectId, testPlanDto.status.name, testPlanDto.taskKey, id)
+        return jdbcTemplate.queryForObject(sql, TestPlanDaoRowMapper(), testPlanDto.name, testPlanDto.projectId, testPlanDto.status.name, testPlanDto.taskId, id)
     }
 
     fun delete(id: Int): Boolean {
@@ -69,7 +70,7 @@ class TestPlanRepository(val jdbcTemplate: JdbcTemplate) {
             val testPlanDao = TestPlanDao()
             testPlanDao.id = rs.getInt("id")
             testPlanDao.name = rs.getString("name")
-            testPlanDao.taskKey = rs.getString("task_key")
+            testPlanDao.taskId = rs.getInt("task_id")
             testPlanDao.status = Status.valueOf(rs.getString("status"))
             testPlanDao.projectId = nullIfZero(rs.getInt("project_id"))
             return testPlanDao

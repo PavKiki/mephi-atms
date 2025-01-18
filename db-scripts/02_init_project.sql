@@ -8,7 +8,7 @@ CREATE TABLE projects (
 CREATE TABLE test_plans (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    task_key VARCHAR(255) NOT NULL,
+    task_id INT NOT NULL,
     status TASK_STATUS_ENUM DEFAULT 'TO DO',
     project_id INT NOT NULL,
     FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
@@ -107,8 +107,8 @@ EXECUTE FUNCTION update_test_plan_status();
 INSERT INTO projects (name) VALUES ('Project Alpha');
 INSERT INTO projects (name) VALUES ('Project Beta');
 
-INSERT INTO test_plans (name, task_key, project_id) VALUES ('Test Plan 1', 'BCA-007', 2);
-INSERT INTO test_plans (name, task_key, project_id) VALUES ('Test Plan 2', 'ABC-001', 1);
+INSERT INTO test_plans (name, task_id, project_id) VALUES ('Test Plan 1', 1, 2);
+INSERT INTO test_plans (name, task_id, project_id) VALUES ('Test Plan 2', 2, 1);
 
 INSERT INTO test_cases (name, pre_condition, post_condition, test_plan_id)
 VALUES ('Test Case 1', 'Pre Condition 1', 'Post Condition 1', 1);

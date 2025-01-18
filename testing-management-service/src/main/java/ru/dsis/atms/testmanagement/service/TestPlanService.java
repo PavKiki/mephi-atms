@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.dsis.atms.testmanagement.dao.TestCaseDao;
 import ru.dsis.atms.testmanagement.dao.TestPlanDao;
+import ru.dsis.atms.testmanagement.dto.TestPlanCreationDto;
 import ru.dsis.atms.testmanagement.dto.TestPlanDto;
 import ru.dsis.atms.testmanagement.repository.TestPlanRepository;
 
@@ -23,8 +24,8 @@ public class TestPlanService {
         return testPlanRepository.findById(id);
     }
 
-    public TestPlanDao save(TestPlanDto testPlanDto) {
-        return testPlanRepository.save(testPlanDto);
+    public TestPlanDao save(TestPlanCreationDto testPlanCreationDto) {
+        return testPlanRepository.save(testPlanCreationDto);
     }
 
     public TestPlanDao update(int id, TestPlanDto testPlanDto) {

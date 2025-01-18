@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.dsis.atms.testmanagement.dao.TestCaseDao;
 import ru.dsis.atms.testmanagement.dao.TestPlanDao;
+import ru.dsis.atms.testmanagement.dto.TestPlanCreationDto;
 import ru.dsis.atms.testmanagement.dto.TestPlanDto;
 import ru.dsis.atms.testmanagement.service.TestPlanService;
 
@@ -34,8 +35,8 @@ public class TestPlanController {
     }
 
     @PostMapping
-    public ResponseEntity<TestPlanDao> createTestPlan(@RequestBody TestPlanDto testPlanDto) {
-        TestPlanDao createdTestPlanDao = testPlanService.save(testPlanDto);
+    public ResponseEntity<TestPlanDao> createTestPlan(@RequestBody TestPlanCreationDto testPlanCreationDto) {
+        TestPlanDao createdTestPlanDao = testPlanService.save(testPlanCreationDto);
         return new ResponseEntity<>(createdTestPlanDao, HttpStatus.CREATED);
     }
 
