@@ -21,8 +21,8 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<Response> login(@RequestBody UserDao userDto, HttpServletResponse response) {
         try {
-            var token = authService.auth(userDto);
-            return new ResponseEntity<>(new TokenResponse(token), HttpStatus.OK);
+            var tokenRoleDto = authService.auth(userDto);
+            return new ResponseEntity<>(new TokenResponse(tokenRoleDto.getToken(), tokenRoleDto.getRole()), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.UNAUTHORIZED);
         }
